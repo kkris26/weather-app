@@ -8,23 +8,68 @@
   <body>
     <section class="p-4 flex flex-col gap-4">
       <div class="w-full flex flex-col gap-4">
-        <form action="" id="locationForm">
-          <input
-            type="text"
-            id="lokasiInput"
-            placeholder="Masukkan nama kota"
-            required
-            class="p-2 bg-neutral-100"
-            value="bali"
-          />
-          <button type="submit" class="bg-blue-600 text-white p-3 rounded">
+        <div class="flex gap-4 justify-between">
+          <button id="btn-search" class="bg-blue-600 text-white p-3 rounded">
             Cari Cuaca
           </button>
-        </form>
-        <div id="display" class="bg-neutral-100 p-4 flex gap-3 flex-wrap">
- 
+          <button
+            id="btn-current-location"
+            class="bg-green-600 text-white p-3 rounded"
+          >
+            Current Location
+          </button>
         </div>
+        <div
+        id="pop-up-search"
+          class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
+        >
+          <div class="bg-neutral-100 w-100 z-100 p-4 flex flex-col gap-4 relative">
+            <button
+              id="close-search"
+              class="z-90 absolute p-2 bg-black text-white top-0 right-[-24px]"
+            >
+              X
+            </button>
+            <form action="" id="locationForm" class="w-full flex gap-2">
+              <input
+                type="text"
+                id="lokasiInput"
+                placeholder="Masukkan nama kota"
+                required
+                class="p-2 bg-white-300 border-1 rounded flex-1"
+    
+              />
+              <button type="submit" class="bg-blue-600 text-white p-3 rounded">
+                Cari Cuaca
+              </button>
+            </form>
+            <div
+              id="display"
+              class="flex flex-col gap-3 h-100 overflow-auto"
+            ></div>
+          </div>
+        </div>
+        <!-- modal -->
+        <!-- <div
+          id=""
+          class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+        >
+          <div
+            class="bg-white text-black rounded-lg p-6 shadow-lg w-80 relative"
+          >
+            <h2 class="text-xl font-bold mb-4">Ini Pop-up</h2>
+            <p class="mb-4">Ini isi dari pop-upnya.</p>
+            <button
+              id="closeModal"
+              class="absolute top-2 right-2 text-gray-500 hover:text-black"
+            >
+              ✕
+            </button>
+          </div>
+        </div> -->
+        <!-- modal -->
       </div>
+
       <div
         class="w-full bg-blue-300 h-100 flex flex-col items-center justify-center p-4 text-white font-bold rounded"
         id="current"

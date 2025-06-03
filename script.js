@@ -62,6 +62,27 @@ function secondToMinute(value) {
   const minute = value / 60;
   return minute;
 }
+
+//   open and close popup
+const popUp = document.getElementById("pop-up-search");
+const btnSearch = document.getElementById("btn-search");
+const btnClose = document.getElementById("close-search");
+function openPopup() {
+  popUp.classList.remove("hidden");
+}
+function closePopup() {
+  popUp.classList.add("hidden");
+}
+btnClose.addEventListener("click", () => {
+  closePopup();
+});
+btnSearch.addEventListener("click", () => {
+  openPopup();
+});
+
+const defaultData = "kuta";
+getLocation(defaultData);
+document.getElementById("lokasiInput").value = defaultData;
 async function getLocation(value) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${value}`;
   try {
@@ -73,45 +94,42 @@ async function getLocation(value) {
     const display = document.getElementById("display");
     display.innerHTML = "";
     for (let i = 0; i < result.length; i++) {
-      const card = document.createElement("div");
       const button = document.createElement("button");
       const name = result[i].name;
       const country = result[i].country;
       const countryCode = result[i].country_code.toLowerCase();
-      const latitude = result[i].latitude;
-      const longitude = result[i].longitude;
+      const lat = result[i].latitude;
+      const lon = result[i].longitude;
       const province = result[i].admin1;
       const region = result[i].admin2;
-      button.textContent = "Lihat Cuaca";
       button.className =
-        "mt-2 bg-white text-green-600 px-3 py-1 rounded hover:bg-blue-600";
-      card.className =
         "card bg-green-500 p-4 text-white rounded hover:bg-green-700";
-      card.innerHTML = `
-         <h2>Name: ${name}</h2>
-                  <div class="flex items-center gap-2">
-            <img
-              src="https://flagcdn.com/48x36/${countryCode}.png"
-              class=" w-10"
-              alt=""
-              srcset=""
-            />
-            <h2>${country}</h2>
-          </div>
-        <h2>Latitude: ${latitude}</h2>
-        <h2>Longitude: ${longitude}</h2>
-       
-        ${province ? `<h2>Province: ${province}</h2>` : ""}
-        ${region ? `<h2>Region: ${region}</h2>` : ""}
-        
+      button.innerHTML = `
+      <div class="flex gap-2">
+      <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" />
+            <div class="flex flex-col items-start w-100%">
+            <h2 class ="font-bold">${name}, ${country}</h2>
+            <div class="flex">
+          ${
+            province || region
+              ? `<p class="text-sm text-left">${province || ""}${
+                  province && region ? ", " : ""
+                }${region || ""}</p>`
+              : ""
+          }
+            
+            </div>
+            
+            </div>
+      </div>
         `;
 
       button.addEventListener("click", () => {
-        getWeather(latitude, longitude, name, country);
+        closePopup();
+        getWeather(lat, lon, name, country);
       });
 
-      card.appendChild(button);
-      display.appendChild(card);
+      display.appendChild(button);
     }
   } catch (error) {}
 }
@@ -124,8 +142,22 @@ form.addEventListener("submit", async function (e) {
   }
 });
 
-async function getWeather(lat, long, name, country) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m&timezone=auto`;
+async function getLocationNow(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+  const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
+    url
+  )}`;
+
+  const response = await fetch(proxyURL);
+  const result = await response.json();
+  const data = JSON.parse(result.contents);
+  const name = data.display_name;
+  const country = data.address.country;
+  getWeather(lat, lon, name, country);
+}
+
+async function getWeather(lat, lon, name, country) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m&timezone=auto`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -181,3 +213,27 @@ async function getWeather(lat, long, name, country) {
     console.error(error.message);
   }
 }
+
+function getCurrentLocation() {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        getLocationNow(lat, lon);
+        38.33259038130476, -106.62706068651539;
+      },
+      function (error) {
+        console.error("Gagal mendapatkan lokasi:", error.message);
+      }
+    );
+  } else {
+    console.error("Geolocation tidak didukung di browser ini.");
+  }
+}
+
+document
+  .getElementById("btn-current-location")
+  .addEventListener("click", () => {
+    getCurrentLocation();
+  });
