@@ -32,27 +32,30 @@ const weatherCodes = {
 function formatDateTime(value) {
   const dateTime = new Date(value);
 
-  const formatter = new Intl.DateTimeFormat("en-GB", {
+  const options = {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  });
+  };
+
+  const formatter = new Intl.DateTimeFormat("en-GB", options);
 
   const formated = formatter.format(dateTime);
   return formated;
 }
 function formatDate(value) {
   const date = new Date(value);
-
-  const formatter = new Intl.DateTimeFormat("en-GB", {
+  const options = {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  });
+  };
+
+  const formatter = new Intl.DateTimeFormat("en-GB", options);
 
   const formated = formatter.format(date);
   return formated;
@@ -80,7 +83,7 @@ btnSearch.addEventListener("click", () => {
   openPopup();
 });
 
-const defaultData = "kuta";
+const defaultData = "jakarta";
 getLocation(defaultData);
 document.getElementById("lokasiInput").value = defaultData;
 async function getLocation(value) {
@@ -142,18 +145,22 @@ form.addEventListener("submit", async function (e) {
   }
 });
 
-async function getLocationNow(lat, lon) {
+async function getLocationName(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
   const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
     url
   )}`;
-
-  const response = await fetch(proxyURL);
-  const result = await response.json();
-  const data = JSON.parse(result.contents);
-  const name = data.display_name;
-  const country = data.address.country;
-  getWeather(lat, lon, name, country);
+  try {
+    const response = await fetch(proxyURL);
+    console.log(response);
+    const result = await response.json();
+    const data = JSON.parse(result.contents);
+    const name = data.display_name;
+    const country = data.address.country;
+    getWeather(lat, lon, name, country);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function getWeather(lat, lon, name, country) {
@@ -175,7 +182,7 @@ async function getWeather(lat, lon, name, country) {
     currentDisplay.innerHTML = `
         <h2>Area : ${name}</h2>
         <h2>Country : ${country}</h2>
-        <h2>Refresh : ${secondToMinute(currentData.interval)} Minute</h2>
+        <h2>Refresh : Every ${secondToMinute(currentData.interval)} Minute</h2>
         <h2>Date : ${formatDateTime(currentData.time)}</h2>
         <h1>Condition : ${currentData.is_day ? "Day" : "Night"}</h1>
         <h2>Cuaca : ${weatherCodes[currentData.weather_code]}</h2>
@@ -215,22 +222,23 @@ async function getWeather(lat, lon, name, country) {
 }
 
 function getCurrentLocation() {
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        getLocationNow(lat, lon);
-        38.33259038130476, -106.62706068651539;
-      },
-      function (error) {
-        console.error("Gagal mendapatkan lokasi:", error.message);
-      }
-    );
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, errorMessage);
   } else {
-    console.error("Geolocation tidak didukung di browser ini.");
+    console.log("Geolocation is not supported by this browser.");
+  }
+
+  function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    getLocationName(lat, lon);
+  }
+  function errorMessage(error) {
+    document.getElementById("current").innerHTML = `<p>${error.message}</p>`;
   }
 }
+
+getCurrentLocation();
 
 document
   .getElementById("btn-current-location")
