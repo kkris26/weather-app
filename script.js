@@ -184,6 +184,12 @@ async function getWeather(lat, lon, name, country) {
 
     const container = document.getElementById("weather");
     const currentDisplay = document.getElementById("current");
+    currentDisplay.classList.add(
+      currentData.is_day ? "bg-blue-300" : "bg-black"
+    );
+    currentDisplay.classList.remove(
+      currentData.is_day ? "bg-black" : "bg-blue-300"
+    );
     currentDisplay.innerHTML = `
         <h2>Area : ${name}</h2>
         <h2>Country : ${country}</h2>
