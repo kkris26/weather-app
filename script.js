@@ -96,6 +96,7 @@ async function getLocation(value) {
 
     const display = document.getElementById("display");
     display.innerHTML = "";
+
     for (let i = 0; i < result.length; i++) {
       const button = document.createElement("button");
       const name = result[i].name;
@@ -134,7 +135,11 @@ async function getLocation(value) {
 
       display.appendChild(button);
     }
-  } catch (error) {}
+  } catch (error) {
+    display.innerHTML = `
+      <p>Lokasi tidak ditemukan</p>
+      `;
+  }
 }
 const form = document.getElementById("locationForm");
 form.addEventListener("submit", async function (e) {
@@ -175,7 +180,7 @@ async function getWeather(lat, lon, name, country) {
     const currentData = data.current;
     const units = data.current_units;
     console.log(currentData);
-    console.log(data);
+    console.log(daily);
 
     const container = document.getElementById("weather");
     const currentDisplay = document.getElementById("current");
