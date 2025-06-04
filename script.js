@@ -172,6 +172,18 @@ function formatDate(value) {
   const formated = formatter.format(date);
   return formated;
 }
+function formatTime(value) {
+  const date = new Date(value);
+  const options = {
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
+  const formatter = new Intl.DateTimeFormat("en-GB", options);
+
+  const formated = formatter.format(date);
+  return formated;
+}
 
 function secondToMinute(value) {
   const minute = value / 60;
@@ -312,7 +324,7 @@ async function getWeather(lat, lon, name, country) {
         <h2>Date : ${formatDateTime(currentData.time)}</h2>
         <h1>Condition : ${isDay ? "Day" : "Night"}</h1>
          <div class = "flex items-center">
-         <h2>Humaidity : ${humidity}</h2>
+         <h2>Humidity : ${humidity}</h2>
      <img class="w-15 m-[-15px]" src="assets/humidity.svg">
     
     </div>
@@ -339,7 +351,7 @@ async function getWeather(lat, lon, name, country) {
       const sunset = daily.sunset[i];
 
       const card = document.createElement("div");
-      card.className = "bg-blue-400 w-100 p-4 text-white font-bold rounded";
+      card.className = "bg-blue-400  p-4 text-white font-bold rounded";
 
       card.innerHTML = `
           <h1>Date :  ${formatDate(date)}</h1>
@@ -350,9 +362,17 @@ async function getWeather(lat, lon, name, country) {
        <img class="w-30" src="assets/${
          isDay ? weatherDataDaily.day_logo : weatherDataDaily.night_logo
        }">
-          <h1>Condition : ${isDay ? "Day" : "Night"}</h1>
-          <h2>Sunrise : ${formatDateTime(sunrise)}</h2>
-          <h2>Sunset : ${formatDateTime(sunset)}</h2>
+       <div class="flex gap-4">
+       <div class = "flex gap-2 items-center">
+       <img class="w-10" src="assets/sunrise.svg">
+       <h2>${formatTime(sunrise)}</h2>
+       </div>
+       <div class = "flex gap-2 items-center">
+       <img class="w-10" src="assets/sunset.svg">
+       
+       <h2>${formatTime(sunset)}</h2>
+       </div>
+       </div>
       `;
       container.appendChild(card);
     }
