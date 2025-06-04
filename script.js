@@ -1,32 +1,144 @@
 const weatherCodes = {
-  0: "Clear sky",
-  1: "Mainly clear",
-  2: "Partly cloudy",
-  3: "Overcast",
-  45: "Fog",
-  48: "Depositing rime fog",
-  51: "Light drizzle",
-  53: "Moderate drizzle",
-  55: "Dense drizzle",
-  56: "Light freezing drizzle",
-  57: "Dense freezing drizzle",
-  61: "Slight rain",
-  63: "Moderate rain",
-  65: "Heavy rain",
-  66: "Light freezing rain",
-  67: "Heavy freezing rain",
-  71: "Slight snowfall",
-  73: "Moderate snowfall",
-  75: "Heavy snowfall",
-  77: "Snow grains",
-  80: "Slight rain showers",
-  81: "Moderate rain showers",
-  82: "Violent rain showers",
-  85: "Slight snow showers",
-  86: "Heavy snow showers",
-  95: "Thunderstorm (slight or moderate)",
-  96: "Thunderstorm with slight hail",
-  99: "Thunderstorm with heavy hail",
+  0: {
+    weather: "Clear sky",
+    day_logo: "/clear.svg",
+    night_logo: "/clear-night.svg",
+  },
+  1: {
+    weather: "Mainly clear",
+    day_logo: "/clear.svg",
+    night_logo: "/clear-night.svg",
+  },
+  2: {
+    weather: "Partly cloudy",
+    day_logo: "/partly-cloudy.svg",
+    night_logo: "/partly-cloudy-night.svg",
+  },
+  3: {
+    weather: "Overcast",
+    day_logo: "/overcast.svg",
+    night_logo: "/overcast.svg",
+  },
+  45: {
+    weather: "Fog",
+    day_logo: "/fog.svg",
+    night_logo: "/fog-night.svg",
+  },
+  48: {
+    weather: "Depositing rime fog",
+    day_logo: "/rime-fog.svg",
+    night_logo: "/rime-fog.svg",
+  },
+  51: {
+    weather: "Light drizzle",
+    day_logo: "/light-drizzle.svg",
+    night_logo: "/light-drizzle.svg",
+  },
+  53: {
+    weather: "Moderate drizzle",
+    day_logo: "/drizzle.svg",
+    night_logo: "/drizzle.svg",
+  },
+  55: {
+    weather: "Dense drizzle",
+    day_logo: "/heavy-drizzle.svg",
+    night_logo: "/heavy-drizzle.svg",
+  },
+  56: {
+    weather: "Light freezing drizzle",
+    day_logo: "/light-drizzle.svg",
+    night_logo: "/light-drizzle.svg",
+  },
+  57: {
+    weather: "Dense freezing drizzle",
+    day_logo: "/heavy-drizzle.svg",
+    night_logo: "/heavy-drizzle.svg",
+  },
+  61: {
+    weather: "Slight rain",
+    day_logo: "/slight-rain.svg",
+    night_logo: "/slight-rain-night.svg",
+  },
+  63: {
+    weather: "Moderate rain",
+    day_logo: "/rain.svg",
+    night_logo: "/rain.svg",
+  },
+  65: {
+    weather: "Heavy rain",
+    day_logo: "/heavy-rain.svg",
+    night_logo: "/heavy-rain.svg",
+  },
+  66: {
+    weather: "Light freezing rain",
+    day_logo: "/rain.svg",
+    night_logo: "/rain.svg",
+  },
+  67: {
+    weather: "Heavy freezing rain",
+    day_logo: "/heavy-rain.svg",
+    night_logo: "/heavy-rain.svg",
+  },
+  71: {
+    weather: "Slight snowfall",
+    day_logo: "/light-snow.svg",
+    night_logo: "/light-snow-night.svg",
+  },
+  73: {
+    weather: "Moderate snowfall",
+    day_logo: "/light-snow.svg",
+    night_logo: "/light-snow-night.svg",
+  },
+  75: {
+    weather: "Heavy snowfall",
+    day_logo: "/heavy-snow.svg",
+    night_logo: "/heavy-snow.svg",
+  },
+  77: {
+    weather: "Snow grains",
+    day_logo: "/snow-grains.svg",
+    night_logo: "/snow-grains.svg",
+  },
+  80: {
+    weather: "Slight rain showers",
+    day_logo: "/slight-rain-showers.svg",
+    night_logo: "/slight-rain-showers-night.svg",
+  },
+  81: {
+    weather: "Moderate rain showers",
+    day_logo: "/rain-showers.svg",
+    night_logo: "/rain-showers.svg",
+  },
+  82: {
+    weather: "Violent rain showers",
+    day_logo: "/heavy-rain-showers.svg",
+    night_logo: "/heavy-rain-showers.svg",
+  },
+  85: {
+    weather: "Slight snow showers",
+    day_logo: "/snow.svg",
+    night_logo: "/snow.svg",
+  },
+  86: {
+    weather: "Heavy snow showers",
+    day_logo: "/heavy-snow-showers.svg",
+    night_logo: "/heavy-snow-showers.svg",
+  },
+  95: {
+    weather: "Thunderstorm (slight or moderate)",
+    day_logo: "/thunderstorm.svg",
+    night_logo: "/thunderstorm.svg",
+  },
+  96: {
+    weather: "Thunderstorm with slight hail",
+    day_logo: "/heavy-hail.svg",
+    night_logo: "/heavy-hail.svg",
+  },
+  99: {
+    weather: "Thunderstorm with heavy hail",
+    day_logo: "/heavy-hail.svg",
+    night_logo: "/heavy-hail.svg",
+  },
 };
 
 function formatDateTime(value) {
@@ -111,18 +223,20 @@ async function getLocation(value) {
       button.innerHTML = `
       <div class="flex gap-2">
       <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" />
-            <div class="flex flex-col items-start w-100%">
+            <div class="flex flex-col items-start justify-center w-100%">
             <h2 class ="font-bold">${name}, ${country}</h2>
-            <div class="flex">
+            
           ${
             province || region
-              ? `<p class="text-sm text-left">${province || ""}${
+              ? `<div class="flex">
+              <p class="text-sm text-left">${province || ""}${
                   province && region ? ", " : ""
-                }${region || ""}</p>`
+                }${region || ""}</p>  
+                 </div>`
               : ""
           }
             
-            </div>
+          
             
             </div>
       </div>
@@ -169,7 +283,7 @@ async function getLocationName(lat, lon) {
 }
 
 async function getWeather(lat, lon, name, country) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -179,35 +293,46 @@ async function getWeather(lat, lon, name, country) {
     const daily = data.daily;
     const currentData = data.current;
     const units = data.current_units;
+    const isDay = currentData.is_day;
+    const weatherData = weatherCodes[currentData.weather_code];
+    const humidity = currentData.relative_humidity_2m;
     console.log(currentData);
     console.log(daily);
 
     const container = document.getElementById("weather");
     const currentDisplay = document.getElementById("current");
-    currentDisplay.classList.add(
-      currentData.is_day ? "bg-blue-300" : "bg-black"
-    );
-    currentDisplay.classList.remove(
-      currentData.is_day ? "bg-black" : "bg-blue-300"
-    );
+    const nightBG = "bg-[url(assets/bg-night.jpg)]";
+    const dayBG = "bg-[url(assets/bg.webp)]";
+    currentDisplay.classList.add(currentData.is_day ? dayBG : nightBG);
+    currentDisplay.classList.remove(currentData.is_day ? nightBG : dayBG);
     currentDisplay.innerHTML = `
         <h2>Area : ${name}</h2>
         <h2>Country : ${country}</h2>
         <h2>Refresh : Every ${secondToMinute(currentData.interval)} Minute</h2>
         <h2>Date : ${formatDateTime(currentData.time)}</h2>
-        <h1>Condition : ${currentData.is_day ? "Day" : "Night"}</h1>
-        <h2>Cuaca : ${weatherCodes[currentData.weather_code]}</h2>
+        <h1>Condition : ${isDay ? "Day" : "Night"}</h1>
+         <div class = "flex items-center">
+         <h2>Humaidity : ${humidity}</h2>
+     <img class="w-15 m-[-15px]" src="assets/humidity.svg">
+    
+    </div>
+        <h2>Cuaca : ${weatherData.weather}</h2>
+          <img class="w-30" src="assets/${
+            isDay ? weatherData.day_logo : weatherData.night_logo
+          }">
         <h2>Temperature : ${currentData.temperature_2m} ${
       units.temperature_2m
     }</h2>
-        <h2>Wind Speeds : ${currentData.wind_speed_10m} ${
-      units.wind_speed_10m
-    }</h2>
+    <div class = "flex gap-2 items-center">
+     <img class="w-10" src="assets/wind.svg">
+     <p>${currentData.wind_speed_10m} ${units.wind_speed_10m}</p>
+    </div>
         `;
     container.innerHTML = "";
     for (let i = 1; i < daily.time.length; i++) {
       const date = daily.time[i];
       const code = daily.weather_code[i];
+      const weatherDataDaily = weatherCodes[code];
       const minTemp = daily.temperature_2m_min[i];
       const maxTemp = daily.temperature_2m_max[i];
       const sunrise = daily.sunrise[i];
@@ -218,10 +343,14 @@ async function getWeather(lat, lon, name, country) {
 
       card.innerHTML = `
           <h1>Date :  ${formatDate(date)}</h1>
-          <h2>Cuaca : ${weatherCodes[code]}</h2>
+          <h2>Cuaca : ${weatherDataDaily.weather}</h2>
           <h2>Temperature : ${minTemp} ${units.temperature_2m} - ${maxTemp} ${
         units.temperature_2m
       }</h2>
+       <img class="w-30" src="assets/${
+         isDay ? weatherDataDaily.day_logo : weatherDataDaily.night_logo
+       }">
+          <h1>Condition : ${isDay ? "Day" : "Night"}</h1>
           <h2>Sunrise : ${formatDateTime(sunrise)}</h2>
           <h2>Sunset : ${formatDateTime(sunset)}</h2>
       `;
