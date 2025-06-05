@@ -6,58 +6,133 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
-    <header class="p-4">
-      <div class="w-full flex flex-col gap-4">
-        <div class="flex gap-4 justify-between">
-          <button id="btn-search" class="bg-blue-600 text-white p-3 rounded">
-            Cari Cuaca
-          </button>
+    <section>
+      <div
+        id="pop-up-search"
+        class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
+      >
+        <div
+          class="bg-white rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 md:gap-4 relative"
+        >
           <button
-            id="btn-current-location"
-            class="bg-green-600 text-white p-3 rounded"
+            id="close-search"
+            class="z-90 cursor-pointer absolute p-1 md:p-1 bg-white hover:bg-neutral-100 text-black top-0 right-[-28px] md:right-[-36px] rounded-full"
           >
-            Current Location
+            <img
+              class="w-4 md:w-5"
+              src="assets/close-btn.svg"
+              alt=""
+              srcset=""
+            />
           </button>
+          <form action="" id="locationForm" class="w-full flex gap-2">
+            <input
+              type="text"
+              id="lokasiInput"
+              placeholder="Masukkan nama kota"
+              required
+              class="py-3 px-3 bg-white-300 border-1 border-black/10 rounded-lg flex-1 text-sm"
+            />
+            <button
+              type="submit"
+              class="cursor-pointer text-sm bg-black hover:bg-neutral-800 text-white px-3 rounded-lg"
+            >
+              Search
+            </button>
+          </form>
+          <div
+            id="display"
+            class="flex flex-col gap-2 md:gap-3 max-h-100 overflow-auto"
+          ></div>
+        </div>
+      </div>
+    </section>
+    <section class="flex flex-col gap-4" id="content">
+      <div
+        class="bg-[url(assets/bg.jpg)] relative w-full bg-cover h-screen flex flex-col items-center justify-between p-4 text-white"
+        id="current"
+      >
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div
+          class="flex flex-col justify-between relative w-full items-center h-[100%]"
+        >
+          <div class="flex items-center justify-between w-full">
+            <div class="flex gap-1 items-center">
+              <img class="w-8" src="assets/map-icon-2.svg" />
+              <div>
+                <h1
+                  class="text-md max-w-[200px] md:max-w-[300px] truncate"
+                  id="location-name"
+                >
+                  Loading ...
+                </h1>
+                <p
+                  class="md:text-xs text-[10px] mt-[-4px] text-white/70"
+                  id="sub-location-name"
+                >
+                  Loading ...
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button
+                class="p-2 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
+                id="btn-search"
+              >
+                <img src="assets/search.svg" class="w-5" alt="" srcset="" />
+              </button>
+              <button
+                class="p-2 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
+                id="btn-current-location"
+              >
+                <img src="assets/map-pin.svg" class="w-5" alt="" srcset="" />
+              </button>
+            </div>
+          </div>
+          <div
+            class="absolute backdrop-blur-sm bg-white/20 p-5 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
+          >
+            <h2
+              class="absolute top-5 right-5 font-bold text-xl"
+              id="current-temperature"
+            >
+              ...
+            </h2>
+            <img
+              class="w-40 p-4"
+              id="img-current-weather"
+              src="assets/clear.svg"
+            />
+            <h2 class="absolute bottom-5" id="current-weather">Loading ...</h2>
+          </div>
+          <div
+            class="flex text-[12px] md:text-sm w-full rounded-lg justify-between items-center"
+          >
+            <div class="flex gap-1">
+              <div class="flex gap-1 items-center">
+                <img class="w-5" src="assets/humidity-icon.svg" />
+                <p id="current-humidity">...</p>
+              </div>
+              <div class="flex items-center">
+                <img class="w-10" src="assets/wind.svg" />
+                <p id="current-wind-speed">...</p>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <p id="current-time">Loading ...</p>
+            </div>
+          </div>
         </div>
         <div
-          id="pop-up-search"
-          class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
+          class="w-full h-80 overflow-x-auto pt-4 mt-1 border-t-1 border-white/60"
         >
           <div
-            class="bg-neutral-100 w-100 z-100 p-4 flex flex-col gap-4 relative"
+            class="grid h-[100%] gap-2 grid-cols-6 md:w-full w-250"
+            id="weather"
           >
-            <button
-              id="close-search"
-              class="z-90 absolute p-2 bg-black text-white top-0 right-[-24px]"
-            >
-              X
-            </button>
-            <form action="" id="locationForm" class="w-full flex gap-2">
-              <input
-                type="text"
-                id="lokasiInput"
-                placeholder="Masukkan nama kota"
-                required
-                class="p-2 bg-white-300 border-1 rounded flex-1"
-              />
-              <button type="submit" class="bg-blue-600 text-white p-3 rounded">
-                Cari Cuaca
-              </button>
-            </form>
-            <div
-              id="display"
-              class="flex flex-col gap-3 h-100 overflow-auto"
-            ></div>
           </div>
         </div>
       </div>
-    </header>
-    <section class="p-4 flex flex-col gap-4" id="content">
-      <div
-        class="w-full bg-cover h-100 flex flex-col items-center justify-center p-4 text-white font-bold rounded"
-        id="current"
-      ></div>
-      <div class="grid gap-2 grid-cols-3" id="weather"></div>
     </section>
     <script src="script.js"></script>
   </body>

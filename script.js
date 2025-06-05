@@ -158,13 +158,10 @@ function formatDateTime(value) {
   const formated = formatter.format(dateTime);
   return formated;
 }
-function formatDate(value) {
+function formatDay(value) {
   const date = new Date(value);
   const options = {
     weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
   };
 
   const formatter = new Intl.DateTimeFormat("en-GB", options);
@@ -183,11 +180,6 @@ function formatTime(value) {
 
   const formated = formatter.format(date);
   return formated;
-}
-
-function secondToMinute(value) {
-  const minute = value / 60;
-  return minute;
 }
 
 //   open and close popup
@@ -231,24 +223,23 @@ async function getLocation(value) {
       const province = result[i].admin1;
       const region = result[i].admin2;
       button.className =
-        "card bg-green-500 p-4 text-white rounded hover:bg-green-700";
+        "card border-1 border-black/5 cursor-pointer bg-white/80 p-2 md:p-4 hover:bg-neutral-50 rounded-lg";
       button.innerHTML = `
-      <div class="flex gap-2">
-      <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" />
-            <div class="flex flex-col items-start justify-center w-100%">
-            <h2 class ="font-bold">${name}, ${country}</h2>
-            
-          ${
-            province || region
-              ? `<div class="flex">
-              <p class="text-sm text-left">${province || ""}${
-                  province && region ? ", " : ""
-                }${region || ""}</p>  
+                    <div class="flex gap-2">
+              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48">
+                    <div class="flex flex-col items-start justify-center w-100%">
+                    <h2 class="text-black text-sm font-medium" >${name}, ${country}</h2>
+                    
+                    ${
+                      province || region
+                        ? `<div class="flex">
+             <p class="text-[10px] text-left text-black/50">${province || ""}${
+                            province && region ? ", " : ""
+                          }${region || ""}</p>  
                  </div>`
-              : ""
-          }
-            </div>
-      </div>
+                        : ""
+                    }
+              </div>
         `;
 
       button.addEventListener("click", () => {
@@ -295,11 +286,11 @@ async function getWeather(lat, lon, name, country) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
-    console.log(response)
-    if(!response.ok){
-      console.log("Response Tidak OK")
+    console.log(response);
+    if (!response.ok) {
+      console.log("Response Tidak OK");
       console.log(response.statusText);
-      return
+      return;
     }
     const data = await response.json();
     const daily = data.daily;
@@ -313,36 +304,34 @@ async function getWeather(lat, lon, name, country) {
 
     const container = document.getElementById("weather");
     const currentDisplay = document.getElementById("current");
+    const currentLocationName = document.getElementById("location-name");
+    const currentSubLocation = document.getElementById("sub-location-name");
+    const currentTemperature = document.getElementById("current-temperature");
+    const currentImgWeather = document.getElementById("img-current-weather");
+    const currentWeather = document.getElementById("current-weather");
+    const currentHumidity = document.getElementById("current-humidity");
+    const currentWindSpeed = document.getElementById("current-wind-speed");
+    const currentTime = document.getElementById("current-time");
+
+    // to html
+    currentLocationName.innerText = name ? name : "Tidak Diketahui";
+    currentSubLocation.innerText = country ? country : "Tidak Diketahui";
+    currentTemperature.innerText = `${currentData.temperature_2m} ${units.temperature_2m}`;
+    currentImgWeather.src = `assets/${
+      isDay ? weatherData.day_logo : weatherData.night_logo
+    }`;
+    currentWeather.innerText = weatherData.weather;
+    currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
+    currentWindSpeed.innerText = `${currentData.wind_speed_10m} ${units.wind_speed_10m}`;
+
+    currentTime.innerText = formatDateTime(currentData.time);
+    // to html
+
     const nightBG = "bg-[url(assets/bg-night.jpg)]";
-    const dayBG = "bg-[url(assets/bg.webp)]";
+    const dayBG = "bg-[url(assets/bg.jpg)]";
     currentDisplay.classList.add(currentData.is_day ? dayBG : nightBG);
     currentDisplay.classList.remove(currentData.is_day ? nightBG : dayBG);
-    currentDisplay.innerHTML = `
-      <div class = "flex gap-2 items-center">
-      <img class="w-5" src="assets/map-icon.svg">
-      <h2>${name ? name : "Tidak Diketahui"}</h2>
-    </div>
-        <h2>Country : ${country ? country : "Tidak Diketahui"}</h2>
-        <h2>Refresh : Every ${secondToMinute(currentData.interval)} Minute</h2>
-        <h2>Date : ${formatDateTime(currentData.time)}</h2>
-        <h1>Condition : ${isDay ? "Day" : "Night"}</h1>
-         <div class = "flex items-center">
-         <h2>Humidity : ${humidity}</h2>
-     <img class="w-15 m-[-15px]" src="assets/humidity.svg">
-    
-    </div>
-        <h2>Cuaca : ${weatherData.weather}</h2>
-          <img class="w-30" src="assets/${
-            isDay ? weatherData.day_logo : weatherData.night_logo
-          }">
-        <h2>Temperature : ${currentData.temperature_2m} ${
-      units.temperature_2m
-    }</h2>
-    <div class = "flex gap-2 items-center">
-     <img class="w-10" src="assets/wind.svg">
-     <p>${currentData.wind_speed_10m} ${units.wind_speed_10m}</p>
-    </div>
-        `;
+
     container.innerHTML = "";
     for (let i = 1; i < daily.time.length; i++) {
       const date = daily.time[i];
@@ -353,35 +342,47 @@ async function getWeather(lat, lon, name, country) {
       const sunrise = daily.sunrise[i];
       const sunset = daily.sunset[i];
 
+      const weather = document.getElementById("weather");
       const card = document.createElement("div");
-      card.className = "bg-blue-400  p-4 text-white font-bold rounded";
+      card.className =
+        "backdrop-blur-sm w-full text-[9px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
-          <h1>Date :  ${formatDate(date)}</h1>
-          <h2>Cuaca : ${weatherDataDaily.weather}</h2>
-          <h2>Temperature : ${minTemp} ${units.temperature_2m} - ${maxTemp} ${
-        units.temperature_2m
-      }</h2>
-       <img class="w-30" src="assets/${
-         isDay ? weatherDataDaily.day_logo : weatherDataDaily.night_logo
-       }">
-       <div class="flex gap-4">
-       <div class = "flex gap-2 items-center">
-       <img class="w-10" src="assets/sunrise.svg">
-       <h2>${formatTime(sunrise)}</h2>
-       </div>
-       <div class = "flex gap-2 items-center">
-       <img class="w-10" src="assets/sunset.svg">
-       
-       <h2>${formatTime(sunset)}</h2>
-       </div>
-       </div>
-      `;
-      container.appendChild(card);
+              <div class="flex  justify-between">
+                <p>${formatDay(date)}</p>
+                <p>${minTemp}°C - ${maxTemp}°C</p>
+              </div>
+              <div
+                class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              >
+                <img class="w-30" src="assets/${
+                  isDay
+                    ? weatherDataDaily.day_logo
+                    : weatherDataDaily.night_logo
+                }" />
+                <p class="absolute bottom-0 text-[10px] px-4 text-center">${
+                  weatherDataDaily.weather
+                }</p>
+      
+    
+              </div>
+
+              <div class="flex gap-4 mt-2 justify-between">
+                <div class="flex gap-2 items-center">
+                  <img class="w-5" src="assets/sunrise.svg" />
+                  <p>${formatTime(sunrise)}</p>
+
+                </div>
+                <div class="flex gap-2 items-center">
+                  <img class="w-5" src="assets/sunset.svg" />
+                  <p>${formatTime(sunset)}</p>
+                </div>
+              </div>`;
+      weather.appendChild(card);
     }
   } catch (error) {
     console.error(error);
-    console.log('Fetch Gagal')
+    console.log("Fetch Gagal");
   }
 }
 
