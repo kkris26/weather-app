@@ -269,17 +269,22 @@ async function getWeatherCurrentLocatione(lat, lon) {
   const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
     url
   )}`;
-
-  const response = await fetch(proxyURL);
-  console.log(response);
-  if (!response.ok) {
-    return getWeather(lat, lon);
+  try {
+    const response = await fetch(proxyURL);
+    console.log(response);
+    if (!response.ok) {
+      throw "Gagal Fetch";
+    }
+    console.log("fetching");
+    const result = await response.json();
+    const data = JSON.parse(result.contents);
+    const name = data.display_name;
+    const country = data.address.country;
+    getWeather(lat, lon, name, country);
+  } catch (error) {
+    console.log(error);
+    getWeather(lat, lon);
   }
-  const result = await response.json();
-  const data = JSON.parse(result.contents);
-  const name = data.display_name;
-  const country = data.address.country;
-  getWeather(lat, lon, name, country);
 }
 
 async function getWeather(lat, lon, name, country) {
@@ -288,9 +293,7 @@ async function getWeather(lat, lon, name, country) {
     const response = await fetch(url);
     console.log(response);
     if (!response.ok) {
-      console.log("Response Tidak OK");
-      console.log(response.statusText);
-      return;
+      throw "Gagal Fetch Open Meteo Forecast";
     }
     const data = await response.json();
     const daily = data.daily;
@@ -381,8 +384,7 @@ async function getWeather(lat, lon, name, country) {
       weather.appendChild(card);
     }
   } catch (error) {
-    console.error(error);
-    console.log("Fetch Gagal");
+    console.log(error);
   }
 }
 
