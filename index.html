@@ -12,7 +12,7 @@
         class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
       >
         <div
-          class="bg-white rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 md:gap-4 relative"
+          class="bg-gray-100 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 md:gap-4 relative"
         >
           <button
             id="close-search"
@@ -31,11 +31,11 @@
               id="lokasiInput"
               placeholder="Masukkan nama kota"
               required
-              class="py-3 px-3 bg-white-300 border-1 border-black/10 rounded-lg flex-1 text-sm"
+              class="py-3 px-3 border-1 border-black/10 rounded-lg flex-1 text-sm"
             />
             <button
               type="submit"
-              class="cursor-pointer text-sm bg-black hover:bg-neutral-800 text-white px-3 rounded-lg"
+              class="cursor-pointer text-sm bg-black hover:bg-neutral-800 text-white px-4 rounded-lg"
             >
               Search
             </button>
@@ -58,16 +58,16 @@
         >
           <div class="flex items-center justify-between w-full">
             <div class="flex gap-1 items-center">
-              <img class="w-8" src="assets/map-icon-2.svg" />
+              <img class="w-5 md:w-6" src="assets/map-icon-2.svg" />
               <div>
                 <h1
-                  class="text-md max-w-[200px] md:max-w-[300px] truncate"
+                  class="text-sm md:text-md max-w-[200px] md:max-w-[350px] truncate"
                   id="location-name"
                 >
                   Loading ...
                 </h1>
                 <p
-                  class="md:text-xs text-[10px] mt-[-4px] text-white/70"
+                  class="md:text-xs text-[10px] mt-[-3px] text-white/70"
                   id="sub-location-name"
                 >
                   Loading ...
@@ -90,20 +90,23 @@
             </div>
           </div>
           <div
-            class="absolute backdrop-blur-sm bg-white/20 p-5 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
+            class="absolute w-60 backdrop-blur-sm bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
           >
-            <h2
-              class="absolute top-5 right-5 font-bold text-xl"
-              id="current-temperature"
+            <div
+              class="absolute flex justify-between items-center w-full top-5 px-5"
             >
-              ...
-            </h2>
+              <p class="text-md">Today</p>
+
+              <h2 class="text-md" id="current-temperature">...</h2>
+            </div>
             <img
-              class="w-40 p-4"
+              class="w-full p-4"
               id="img-current-weather"
               src="assets/clear.svg"
             />
-            <h2 class="absolute bottom-5" id="current-weather">Loading ...</h2>
+            <h2 class="absolute bottom-5 text-md" id="current-weather">
+              Loading ...
+            </h2>
           </div>
           <div
             class="flex text-[12px] md:text-sm w-full rounded-lg justify-between items-center"
@@ -124,13 +127,12 @@
           </div>
         </div>
         <div
-          class="w-full h-80 overflow-x-auto pt-4 mt-1 border-t-1 border-white/60"
+          class="w-full h-70 md:h-80 overflow-x-auto pt-4 mt-1 border-t-1 border-white/60"
         >
           <div
-            class="grid h-[100%] gap-2 grid-cols-6 md:w-full w-250"
+            class="grid h-[100%] md:gap-3 gap-2 grid-cols-6 md:w-full w-250"
             id="weather"
-          >
-          </div>
+          ></div>
         </div>
       </div>
     </section>

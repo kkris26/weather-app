@@ -223,19 +223,19 @@ async function getLocation(value) {
       const province = result[i].admin1;
       const region = result[i].admin2;
       button.className =
-        "card border-1 border-black/5 cursor-pointer bg-white/80 p-2 md:p-4 hover:bg-neutral-50 rounded-lg";
+        "card border-1 border-black/10 cursor-pointer p-2 md:p-3 hover:bg-gray-200/40 rounded-lg";
       button.innerHTML = `
                     <div class="flex gap-2">
-              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48">
+              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-black/10">
                     <div class="flex flex-col items-start justify-center w-100%">
-                    <h2 class="text-black text-sm font-medium" >${name}, ${country}</h2>
+                    <h2 class="text-black text-sm" >${name}, ${country}</h2>
                     
                     ${
                       province || region
                         ? `<div class="flex">
-             <p class="text-[10px] text-left text-black/50">${province || ""}${
-                            province && region ? ", " : ""
-                          }${region || ""}</p>  
+             <p class="text-[10px] md:text-[-14] text-left text-black/60">${
+               province || ""
+             }${province && region ? ", " : ""}${region || ""}</p>  
                  </div>`
                         : ""
                     }
