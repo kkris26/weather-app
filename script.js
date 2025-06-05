@@ -247,9 +247,6 @@ async function getLocation(value) {
                  </div>`
               : ""
           }
-            
-          
-            
             </div>
       </div>
         `;
@@ -268,7 +265,7 @@ async function getLocation(value) {
   }
 }
 const form = document.getElementById("locationForm");
-form.addEventListener("submit", async function (e) {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
   const value = document.getElementById("lokasiInput").value.trim();
   if (value) {
@@ -276,30 +273,33 @@ form.addEventListener("submit", async function (e) {
   }
 });
 
-async function getLocationName(lat, lon) {
-  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+async function getWeatherCurrentLocatione(lat, lon) {
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
   const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
     url
   )}`;
-  try {
-    const response = await fetch(proxyURL);
-    console.log(response);
-    const result = await response.json();
-    const data = JSON.parse(result.contents);
-    const name = data.display_name;
-    const country = data.address.country;
-    getWeather(lat, lon, name, country);
-  } catch (error) {
-    console.log(error);
+
+  const response = await fetch(proxyURL);
+  console.log(response);
+  if (!response.ok) {
+    return getWeather(lat, lon);
   }
+  const result = await response.json();
+  const data = JSON.parse(result.contents);
+  const name = data.display_name;
+  const country = data.address.country;
+  getWeather(lat, lon, name, country);
 }
 
 async function getWeather(lat, lon, name, country) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status : ${response.status}`);
+    console.log(response)
+    if(!response.ok){
+      console.log("Response Tidak OK")
+      console.log(response.statusText);
+      return
     }
     const data = await response.json();
     const daily = data.daily;
@@ -318,8 +318,11 @@ async function getWeather(lat, lon, name, country) {
     currentDisplay.classList.add(currentData.is_day ? dayBG : nightBG);
     currentDisplay.classList.remove(currentData.is_day ? nightBG : dayBG);
     currentDisplay.innerHTML = `
-        <h2>Area : ${name}</h2>
-        <h2>Country : ${country}</h2>
+      <div class = "flex gap-2 items-center">
+      <img class="w-5" src="assets/map-icon.svg">
+      <h2>${name ? name : "Tidak Diketahui"}</h2>
+    </div>
+        <h2>Country : ${country ? country : "Tidak Diketahui"}</h2>
         <h2>Refresh : Every ${secondToMinute(currentData.interval)} Minute</h2>
         <h2>Date : ${formatDateTime(currentData.time)}</h2>
         <h1>Condition : ${isDay ? "Day" : "Night"}</h1>
@@ -377,7 +380,8 @@ async function getWeather(lat, lon, name, country) {
       container.appendChild(card);
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
+    console.log('Fetch Gagal')
   }
 }
 
@@ -391,7 +395,7 @@ function getCurrentLocation() {
   function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
-    getLocationName(lat, lon);
+    getWeatherCurrentLocatione(lat, lon);
   }
   function errorMessage(error) {
     document.getElementById("current").innerHTML = `<p>${error.message}</p>`;

@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
-    <section class="p-4 flex flex-col gap-4">
+    <header class="p-4">
       <div class="w-full flex flex-col gap-4">
         <div class="flex gap-4 justify-between">
           <button id="btn-search" class="bg-blue-600 text-white p-3 rounded">
@@ -20,10 +20,12 @@
           </button>
         </div>
         <div
-        id="pop-up-search"
+          id="pop-up-search"
           class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
         >
-          <div class="bg-neutral-100 w-100 z-100 p-4 flex flex-col gap-4 relative">
+          <div
+            class="bg-neutral-100 w-100 z-100 p-4 flex flex-col gap-4 relative"
+          >
             <button
               id="close-search"
               class="z-90 absolute p-2 bg-black text-white top-0 right-[-24px]"
@@ -37,7 +39,6 @@
                 placeholder="Masukkan nama kota"
                 required
                 class="p-2 bg-white-300 border-1 rounded flex-1"
-    
               />
               <button type="submit" class="bg-blue-600 text-white p-3 rounded">
                 Cari Cuaca
@@ -50,12 +51,12 @@
           </div>
         </div>
       </div>
-
+    </header>
+    <section class="p-4 flex flex-col gap-4" id="content">
       <div
         class="w-full bg-cover h-100 flex flex-col items-center justify-center p-4 text-white font-bold rounded"
         id="current"
-      >
-    </div>
+      ></div>
       <div class="grid gap-2 grid-cols-3" id="weather"></div>
     </section>
     <script src="script.js"></script>
