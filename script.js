@@ -97,8 +97,8 @@ const weatherCodes = {
   },
   80: {
     weather: "Light showers",
-    day_logo: "/slight-rain-showers.svg",
-    night_logo: "/slight-rain-showers-night.svg",
+    day_logo: "/light-drizzle.svg",
+    night_logo: "/light-drizzle.svg",
   },
   81: {
     weather: "Rain showers",
@@ -123,13 +123,13 @@ const weatherCodes = {
   },
   96: {
     weather: "Thunder + hail",
-    day_logo: "/heavy-hail.svg",
-    night_logo: "/heavy-hail.svg",
+    day_logo: "/thunderstorm.svg",
+    night_logo: "/thunderstorm.svg",
   },
   99: {
     weather: "Heavy thunder",
-    day_logo: "/heavy-hail.svg",
-    night_logo: "/heavy-hail.svg",
+    day_logo: "/thunderstorm.svgg",
+    night_logo: "/thunderstorm.svg",
   },
 };
 
