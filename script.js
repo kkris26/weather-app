@@ -133,6 +133,7 @@ const weatherCodes = {
   },
 };
 
+let errorGetCurrentLocation = false;
 function formatDateTime(value) {
   const dateTime = new Date(value);
 
@@ -191,9 +192,9 @@ btnSearch.addEventListener("click", () => {
   openPopup();
 });
 
-const defaultData = "sumatra";
-getLocation(defaultData);
-document.getElementById("lokasiInput").value = defaultData;
+// const defaultData = "sumatra";
+// getLocation(defaultData);
+// document.getElementById("lokasiInput").value = defaultData;
 async function getLocation(value) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${value}`;
   try {
@@ -245,7 +246,7 @@ async function getLocation(value) {
     }
   } catch (error) {
     display.innerHTML = `
-      <p>Location not found</p>
+      <p class="text-red-500/70">"${value}" not found</p>
       `;
   }
 }
@@ -260,7 +261,7 @@ form.addEventListener("submit", (e) => {
 
 async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
-  const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
+  const proxyURL = `https://apfi.allorigins.win/get?url=${encodeURIComponent(
     url
   )}`;
 
@@ -297,6 +298,22 @@ const today = document.getElementById("today");
 const currentWindSpeed = document.getElementById("current-wind-speed");
 const currentTime = document.getElementById("current-time");
 const weatherLoading = document.getElementById("weather-loading");
+const weather = document.getElementById("weather");
+
+// error popup
+const errorContainer = document.getElementById("error-popup");
+const errorText = document.getElementById("error-text");
+const btnCloseerrorPopup = document.getElementById("close-error-popup");
+
+function errorPopup(text) {
+  errorContainer.classList.remove("hidden");
+  errorText.innerText = text;
+}
+
+btnCloseerrorPopup.addEventListener("click", () => {
+  errorContainer.classList.add("hidden");
+});
+// error popup
 
 async function getWeather(lat, lon, location, country) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
@@ -304,7 +321,7 @@ async function getWeather(lat, lon, location, country) {
     const response = await fetch(url);
     console.log(response);
     if (!response.ok) {
-      throw "Gagal Fetch Open Meteo Forecast";
+      throw "bad request";
     }
     const data = await response.json();
     const daily = data.daily;
@@ -331,7 +348,7 @@ async function getWeather(lat, lon, location, country) {
     currentImgWeather.className = ("w-full", "p-4");
     currentWeather.innerText = weatherData.weather;
     currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
-    today.innerText = 'Today'
+    today.innerText = "Today";
     currentWindSpeed.innerText = `${currentData.wind_speed_10m} ${units.wind_speed_10m}`;
 
     currentTime.innerText = formatDateTime(currentData.time);
@@ -341,7 +358,6 @@ async function getWeather(lat, lon, location, country) {
     const dayBG = "bg-[url(assets/bg-day.webp)]";
     currentDisplay.classList.add(currentData.is_day ? dayBG : nightBG);
     currentDisplay.classList.remove(currentData.is_day ? nightBG : dayBG);
-    weather.classList.add("grid-cols-6", "w-230");
 
     weather.innerHTML = "";
     for (let i = 1; i < daily.time.length; i++) {
@@ -353,15 +369,14 @@ async function getWeather(lat, lon, location, country) {
       const sunrise = daily.sunrise[i];
       const sunset = daily.sunset[i];
 
-      const weather = document.getElementById("weather");
       const card = document.createElement("div");
       card.className =
         "backdrop-blur-sm w-full text-[8px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
-              <div class="flex  justify-between">
+              <div class="flex gap-1 justify-between">
                 <p>${formatDay(date)}</p>
-                <p>${minTemp} °C - ${maxTemp} °C</p>
+                <p class="text-end">${minTemp} °C - ${maxTemp} °C</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -392,8 +407,15 @@ async function getWeather(lat, lon, location, country) {
       weather.appendChild(card);
     }
   } catch (error) {
-    console.log(error);
-    currentWeather.innerText = error
+    if (error == "bad request") {
+      const text = `Oops! We couldn’t find any data for “${location}”`;
+      errorPopup(text);
+    } else {
+      console.log(error);
+      console.log("gagal");
+      const text = "Cannot connect to the server. Please try again later.";
+      errorPopup(text);
+    }
   }
 }
 
@@ -407,21 +429,22 @@ function getCurrentLocation() {
   function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
+    errorGetCurrentLocation = false;
     getWeatherCurrentLocation(lat, lon);
   }
   function errorMessage(error) {
-    console.log("reload");
-    const errorText = "Error"
+    console.log(error);
+    const errorText = "Error";
 
-    currentSubLocation.innerText = errorText
-    currentTime.innerText = errorText
-    currentWeather.innerText = errorText
-    today.innerText = errorText
-    weatherLoading.innerText = "Location access was denied";
+    errorGetCurrentLocation = true;
 
-    document.getElementById(
-      "location-name"
-    ).innerHTML = `<p>${error.message}</p>`;
+    cardLocationDaily();
+
+    currentLocationName.innerText = "Location access was denied";
+    currentSubLocation.innerText = errorText;
+    currentTime.innerText = errorText;
+    currentWeather.innerText = errorText;
+    today.innerText = errorText;
   }
 }
 
@@ -432,6 +455,45 @@ document
     getCurrentLocation();
   });
 
+function cardLocationDaily() {
+  weather.innerHTML = "";
+  for (let i = 1; i < 7; i++) {
+    const text = errorGetCurrentLocation ? "Error" : "Loading ..";
+
+    const card = document.createElement("div");
+    card.className =
+      "backdrop-blur-sm w-full text-[8px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
+
+    card.innerHTML = `
+              <div class="flex gap-1 justify-between">
+                <p>${text}</p>
+                <p class="text-end">... °C - ... °C</p>
+              </div>
+              <div
+                class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              >
+                <img class="w-30 p-8" src="assets/tube-spinner.svg" />
+                <p class="absolute bottom-0 capitalize text-[10px] md:text-xs px-4 text-center">${text}</p>
+      
+    
+              </div>
+  
+              <div class="flex gap-4 mt-2 justify-between">
+                <div class="flex gap-2 items-center">
+                  <img class="w-5" src="assets/sunrise.svg" />
+                  <p>...</p>
+  
+                </div>
+                <div class="flex gap-2 items-center">
+                  <img class="w-5" src="assets/sunset.svg" />
+                  <p>...</p>
+                </div>
+              </div>`;
+    weather.appendChild(card);
+  }
+}
+
 window.onload = function () {
   getCurrentLocation();
+  cardLocationDaily();
 };

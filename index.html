@@ -16,11 +16,11 @@
         >
           <button
             id="close-search"
-            class="z-90 cursor-pointer absolute p-1 md:p-1 bg-white hover:bg-neutral-100 text-black top-0 right-[-28px] md:right-[-36px] rounded-full"
+            class="z-90 cursor-pointer absolute p-1 md:p-1 bg-red-400 hover:bg-red-500 text-black top-0 right-[-28px] md:right-[-36px] rounded-full"
           >
             <img
               class="w-4 md:w-5"
-              src="assets/close-btn.svg"
+              src="assets/close-btn-white.svg"
               alt=""
               srcset=""
             />
@@ -29,7 +29,7 @@
             <input
               type="text"
               id="lokasiInput"
-              placeholder="Masukkan nama kota"
+              placeholder="Search for a city..."
               required
               class="py-3 px-3 border-1 border-black/10 rounded-lg flex-1 text-sm"
             />
@@ -43,25 +43,27 @@
           <div
             id="display"
             class="flex flex-col gap-2 max-h-100 overflow-auto"
-          ></div>
+          >
+          <p class="text-neutral-600">Enter a city name to see the list</p>
+        </div>
         </div>
       </div>
     </section>
     <section class="flex flex-col gap-4" id="content">
       <div
-        class=" bg-gray-600 bg-[position:center_20%] relative w-full bg-cover h-screen flex flex-col items-center justify-between p-4 text-white"
+        class="bg-gray-600 bg-[position:center_20%] relative w-full bg-cover h-screen flex flex-col items-center justify-between p-4 text-white"
         id="current"
       >
         <div class="absolute inset-0 bg-black/10"></div>
         <div
           class="flex flex-col justify-between relative w-full items-center h-[100%]"
         >
-          <div class="flex gap-4 items-center  w-full ">
-            <div class="flex gap-1 items-center flex-1  min-w-0">
+          <div class="flex gap-4 items-center w-full">
+            <div class="flex gap-1 items-center flex-1 min-w-0">
               <img class="w-5 md:w-6" src="assets/map-icon-2.svg" />
-              <div class=" w-full  min-w-0">
+              <div class="w-full min-w-0">
                 <h1
-                  class="text-sm md:text-md max-w-full  md:max-w-[40%] truncate"
+                  class="text-sm md:text-md max-w-full md:max-w-[40%] truncate"
                   id="location-name"
                 >
                   Loading ...
@@ -74,7 +76,7 @@
                 </p>
               </div>
             </div>
-            <div class="flex gap-2  w-fit justify-end">
+            <div class="flex gap-2 w-fit justify-end">
               <button
                 class="p-2 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
                 id="btn-search"
@@ -104,7 +106,10 @@
               id="img-current-weather"
               src="assets/tube-spinner.svg"
             />
-            <h2 class="absolute capitalize bottom-5 text-md px-5 text-center" id="current-weather">
+            <h2
+              class="absolute capitalize bottom-5 text-md px-5 text-center"
+              id="current-weather"
+            >
               Loading ...
             </h2>
           </div>
@@ -129,13 +134,31 @@
         <div
           class="w-full h-70 md:h-80 overflow-x-auto pt-4 mt-1 border-t-1 border-white/60"
         >
-          <div
-            class="grid h-[100%] md:gap-3 gap-2  md:w-full "
-            id="weather"
-          >
-          <div class="backdrop-blur-sm bg-white/20 rounded-lg flex items-center justify-center"><p id="weather-loading">Loading ...</p></div>
+          <div class="grid h-[100%] grid-cols-6 md:gap-3 gap-2 md:w-full w-230" id="weather">
+            <!-- <div
+              class="backdrop-blur-sm bg-white/20 rounded-lg flex items-center justify-center"
+            >
+              <p id="weather-loading">Loading ...</p>
+            </div> -->
+          </div>
         </div>
-        </div>
+      </div>
+    </section>
+    <section
+      id="error-popup"
+      class="inset-0 fixed flex justify-center items-center bg-black/60 hidden"
+    >
+      <div
+        class="p-6 w-70 md:w-80 flex flex-col gap-4 justify-center items-center rounded-lg relative bg-white "
+      >
+      <img src="assets/error_icon.svg" class="w-20" alt="">
+        <p id="error-text" class="text-neutral-700 text-center text-sm font-bold  "></p>
+        <button
+          id="close-error-popup"
+          class="absolute cursor-pointer w-6 top-0 right-[-30px] bg-red-400 hover:bg-red-500 rounded-full p-1"
+        >
+          <img src="assets/close-btn-white.svg" alt="" srcset="" />
+        </button>
       </div>
     </section>
     <script src="script.js"></script>
