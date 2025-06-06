@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+      *{
+        transition: 0.3s;
+      }
+    </style>
   </head>
   <body>
     <section
@@ -75,13 +81,13 @@
             </div>
             <div class="flex gap-2 w-fit justify-end">
               <button
-                class="p-2 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
+                class="p-2 hover:bg-white/15 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
                 id="btn-search"
               >
                 <img src="assets/search.svg" class="w-5" alt="" srcset="" />
               </button>
               <button
-                class="p-2 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
+                class="p-2 hover:bg-white/15 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
                 id="btn-current-location"
               >
                 <img src="assets/map-pin.svg" class="w-5" alt="" srcset="" />
@@ -89,7 +95,7 @@
             </div>
           </div>
           <div
-            class="absolute w-60 backdrop-blur-sm bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
+            class="absolute w-60 backdrop-blur-sm hover:bg-white/15 bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
           >
             <div
               class="absolute flex justify-between items-center w-full top-5 px-5"
@@ -99,7 +105,7 @@
               <h2 class="text-md" id="current-temperature">...</h2>
             </div>
             <img
-              class="w-full p-15"
+              class="w-full p-10"
               id="img-current-weather"
               src="assets/tube-spinner.svg"
             />
@@ -151,12 +157,16 @@
       <div
         class="p-6 w-70 md:w-80 flex flex-col gap-4 justify-center items-center rounded-lg relative backdrop-blur-sm bg-white/40"
       >
-        <img src="assets/error_icon.svg" class="w-20 border-2 border-white rounded-full" alt="" />
+        <img
+          src="assets/error_icon.svg"
+          class="w-20 border-2 border-white rounded-full"
+          alt=""
+        />
         <p id="error-text" class="text-white text-center text-sm"></p>
 
         <button
           id="close-error-popup"
-          class=" absolute cursor-pointer w-6 top-0 right-[-30px] bg-red-400 hover:bg-red-500 rounded-full p-1"
+          class="absolute cursor-pointer w-6 top-0 right-[-30px] bg-red-400 hover:bg-red-500 rounded-full p-1"
         >
           <img src="assets/close-btn-white.svg" alt="" srcset="" />
         </button>
