@@ -19,13 +19,9 @@ const weatherCodes = {
     day_logo: "/overcast.svg",
     night_logo: "/overcast.svg",
   },
-  45: {
-    weather: "Fog",
-    day_logo: "/fog.svg",
-    night_logo: "/fog-night.svg",
-  },
+  45: { weather: "Fog", day_logo: "/fog.svg", night_logo: "/fog-night.svg" },
   48: {
-    weather: "Depositing rime fog",
+    weather: "Rime fog",
     day_logo: "/rime-fog.svg",
     night_logo: "/rime-fog.svg",
   },
@@ -40,17 +36,17 @@ const weatherCodes = {
     night_logo: "/drizzle.svg",
   },
   55: {
-    weather: "Dense drizzle",
+    weather: "Heavy drizzle",
     day_logo: "/heavy-drizzle.svg",
     night_logo: "/heavy-drizzle.svg",
   },
   56: {
-    weather: "Light freezing drizzle",
+    weather: "Freezing drizzle",
     day_logo: "/light-drizzle.svg",
     night_logo: "/light-drizzle.svg",
   },
   57: {
-    weather: "Dense freezing drizzle",
+    weather: "Freezing drizzle",
     day_logo: "/heavy-drizzle.svg",
     night_logo: "/heavy-drizzle.svg",
   },
@@ -70,7 +66,7 @@ const weatherCodes = {
     night_logo: "/heavy-rain.svg",
   },
   66: {
-    weather: "Light freezing rain",
+    weather: "Freezing rain",
     day_logo: "/rain.svg",
     night_logo: "/rain.svg",
   },
@@ -80,17 +76,17 @@ const weatherCodes = {
     night_logo: "/heavy-rain.svg",
   },
   71: {
-    weather: "Slight snowfall",
+    weather: "Slight snow",
     day_logo: "/light-snow.svg",
     night_logo: "/light-snow-night.svg",
   },
   73: {
-    weather: "Moderate snowfall",
+    weather: "Moderate snow",
     day_logo: "/light-snow.svg",
     night_logo: "/light-snow-night.svg",
   },
   75: {
-    weather: "Heavy snowfall",
+    weather: "Heavy snow",
     day_logo: "/heavy-snow.svg",
     night_logo: "/heavy-snow.svg",
   },
@@ -100,42 +96,38 @@ const weatherCodes = {
     night_logo: "/snow-grains.svg",
   },
   80: {
-    weather: "Slight rain showers",
+    weather: "Light showers",
     day_logo: "/slight-rain-showers.svg",
     night_logo: "/slight-rain-showers-night.svg",
   },
   81: {
-    weather: "Moderate rain showers",
+    weather: "Rain showers",
     day_logo: "/rain-showers.svg",
     night_logo: "/rain-showers.svg",
   },
   82: {
-    weather: "Violent rain showers",
+    weather: "Heavy showers",
     day_logo: "/heavy-rain-showers.svg",
     night_logo: "/heavy-rain-showers.svg",
   },
-  85: {
-    weather: "Slight snow showers",
-    day_logo: "/snow.svg",
-    night_logo: "/snow.svg",
-  },
+  85: { weather: "Light snow", day_logo: "/snow.svg", night_logo: "/snow.svg" },
   86: {
-    weather: "Heavy snow showers",
+    weather: "Heavy snow",
     day_logo: "/heavy-snow-showers.svg",
     night_logo: "/heavy-snow-showers.svg",
   },
   95: {
-    weather: "Thunderstorm (slight or moderate)",
+    weather: "Thunderstorm",
     day_logo: "/thunderstorm.svg",
     night_logo: "/thunderstorm.svg",
   },
   96: {
-    weather: "Thunderstorm with slight hail",
+    weather: "Thunder + hail",
     day_logo: "/heavy-hail.svg",
     night_logo: "/heavy-hail.svg",
   },
   99: {
-    weather: "Thunderstorm with heavy hail",
+    weather: "Heavy thunder",
     day_logo: "/heavy-hail.svg",
     night_logo: "/heavy-hail.svg",
   },
@@ -199,7 +191,7 @@ btnSearch.addEventListener("click", () => {
   openPopup();
 });
 
-const defaultData = "jakarta";
+const defaultData = "sumatra";
 getLocation(defaultData);
 document.getElementById("lokasiInput").value = defaultData;
 async function getLocation(value) {
@@ -215,27 +207,29 @@ async function getLocation(value) {
 
     for (let i = 0; i < result.length; i++) {
       const button = document.createElement("button");
-      const name = result[i].name;
+      const location = result[i].name;
       const country = result[i].country;
       const countryCode = result[i].country_code.toLowerCase();
       const lat = result[i].latitude;
       const lon = result[i].longitude;
       const province = result[i].admin1;
       const region = result[i].admin2;
+      const regionProvince = [region, province];
+      const regionProvinceJoin = regionProvince.filter(Boolean).join(", ");
+      const subLocation = [region, province, country];
+      const subLocationJoin = subLocation.filter(Boolean).join(", ");
       button.className =
-        "card border-1 border-black/10 cursor-pointer p-2 md:p-3 hover:bg-gray-200/40 rounded-lg";
+        "card border-1 border-black/10 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
       button.innerHTML = `
                     <div class="flex gap-2">
               <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-black/10">
                     <div class="flex flex-col items-start justify-center w-100%">
-                    <h2 class="text-black text-sm" >${name}, ${country}</h2>
+                    <h2 class="text-black text-sm" >${location}, ${country}</h2>
                     
                     ${
-                      province || region
+                      regionProvinceJoin
                         ? `<div class="flex">
-             <p class="text-[10px] md:text-[-14] text-left text-black/60">${
-               province || ""
-             }${province && region ? ", " : ""}${region || ""}</p>  
+             <p class="text-[10px] md:text-[-14] text-left text-black/60">${regionProvinceJoin}</p>  
                  </div>`
                         : ""
                     }
@@ -244,14 +238,14 @@ async function getLocation(value) {
 
       button.addEventListener("click", () => {
         closePopup();
-        getWeather(lat, lon, name, country);
+        getWeather(lat, lon, location, subLocationJoin);
       });
 
       display.appendChild(button);
     }
   } catch (error) {
     display.innerHTML = `
-      <p>Lokasi tidak ditemukan</p>
+      <p>Location not found</p>
       `;
   }
 }
@@ -264,11 +258,15 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-async function getWeatherCurrentLocatione(lat, lon) {
+async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
   const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
     url
   )}`;
+
+  document.getElementById("location-name").innerText = "Geting Location ....";
+  document.getElementById("sub-location-name").innerText =
+    "Geting Location ....";
   try {
     const response = await fetch(proxyURL);
     console.log(response);
@@ -278,16 +276,29 @@ async function getWeatherCurrentLocatione(lat, lon) {
     console.log("fetching");
     const result = await response.json();
     const data = JSON.parse(result.contents);
-    const name = data.display_name;
+    console.log(data);
+    const location = data.display_name;
     const country = data.address.country;
-    getWeather(lat, lon, name, country);
+    getWeather(lat, lon, location, country);
   } catch (error) {
     console.log(error);
     getWeather(lat, lon);
   }
 }
 
-async function getWeather(lat, lon, name, country) {
+const currentDisplay = document.getElementById("current");
+const currentLocationName = document.getElementById("location-name");
+const currentSubLocation = document.getElementById("sub-location-name");
+const currentTemperature = document.getElementById("current-temperature");
+const currentImgWeather = document.getElementById("img-current-weather");
+const currentWeather = document.getElementById("current-weather");
+const currentHumidity = document.getElementById("current-humidity");
+const today = document.getElementById("today");
+const currentWindSpeed = document.getElementById("current-wind-speed");
+const currentTime = document.getElementById("current-time");
+const weatherLoading = document.getElementById("weather-loading");
+
+async function getWeather(lat, lon, location, country) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
@@ -305,37 +316,34 @@ async function getWeather(lat, lon, name, country) {
     console.log(currentData);
     console.log(daily);
 
-    const container = document.getElementById("weather");
-    const currentDisplay = document.getElementById("current");
-    const currentLocationName = document.getElementById("location-name");
-    const currentSubLocation = document.getElementById("sub-location-name");
-    const currentTemperature = document.getElementById("current-temperature");
-    const currentImgWeather = document.getElementById("img-current-weather");
-    const currentWeather = document.getElementById("current-weather");
-    const currentHumidity = document.getElementById("current-humidity");
-    const currentWindSpeed = document.getElementById("current-wind-speed");
-    const currentTime = document.getElementById("current-time");
-
+    const weather = document.getElementById("weather");
     // to html
-    currentLocationName.innerText = name ? name : "Tidak Diketahui";
-    currentSubLocation.innerText = country ? country : "Tidak Diketahui";
+    currentLocationName.innerText = location
+      ? location
+      : "Failed get location name";
+    currentSubLocation.innerText = country
+      ? country
+      : "Failed get location name";
     currentTemperature.innerText = `${currentData.temperature_2m} ${units.temperature_2m}`;
     currentImgWeather.src = `assets/${
       isDay ? weatherData.day_logo : weatherData.night_logo
     }`;
+    currentImgWeather.className = ("w-full", "p-4");
     currentWeather.innerText = weatherData.weather;
     currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
+    today.innerText = 'Today'
     currentWindSpeed.innerText = `${currentData.wind_speed_10m} ${units.wind_speed_10m}`;
 
     currentTime.innerText = formatDateTime(currentData.time);
     // to html
 
-    const nightBG = "bg-[url(assets/bg-night.jpg)]";
-    const dayBG = "bg-[url(assets/bg.jpg)]";
+    const nightBG = "bg-[url(assets/bg-night.webp)]";
+    const dayBG = "bg-[url(assets/bg-day.webp)]";
     currentDisplay.classList.add(currentData.is_day ? dayBG : nightBG);
     currentDisplay.classList.remove(currentData.is_day ? nightBG : dayBG);
+    weather.classList.add("grid-cols-6", "w-230");
 
-    container.innerHTML = "";
+    weather.innerHTML = "";
     for (let i = 1; i < daily.time.length; i++) {
       const date = daily.time[i];
       const code = daily.weather_code[i];
@@ -348,12 +356,12 @@ async function getWeather(lat, lon, name, country) {
       const weather = document.getElementById("weather");
       const card = document.createElement("div");
       card.className =
-        "backdrop-blur-sm w-full text-[9px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
+        "backdrop-blur-sm w-full text-[8px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
               <div class="flex  justify-between">
                 <p>${formatDay(date)}</p>
-                <p>${minTemp}°C - ${maxTemp}°C</p>
+                <p>${minTemp} °C - ${maxTemp} °C</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -363,7 +371,7 @@ async function getWeather(lat, lon, name, country) {
                     ? weatherDataDaily.day_logo
                     : weatherDataDaily.night_logo
                 }" />
-                <p class="absolute bottom-0 text-[10px] px-4 text-center">${
+                <p class="absolute bottom-0 capitalize text-[10px] md:text-xs px-4 text-center">${
                   weatherDataDaily.weather
                 }</p>
       
@@ -385,6 +393,7 @@ async function getWeather(lat, lon, name, country) {
     }
   } catch (error) {
     console.log(error);
+    currentWeather.innerText = error
   }
 }
 
@@ -398,17 +407,31 @@ function getCurrentLocation() {
   function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
-    getWeatherCurrentLocatione(lat, lon);
+    getWeatherCurrentLocation(lat, lon);
   }
   function errorMessage(error) {
-    document.getElementById("current").innerHTML = `<p>${error.message}</p>`;
+    console.log("reload");
+    const errorText = "Error"
+
+    currentSubLocation.innerText = errorText
+    currentTime.innerText = errorText
+    currentWeather.innerText = errorText
+    today.innerText = errorText
+    weatherLoading.innerText = "Location access was denied";
+
+    document.getElementById(
+      "location-name"
+    ).innerHTML = `<p>${error.message}</p>`;
   }
 }
-
-getCurrentLocation();
 
 document
   .getElementById("btn-current-location")
   .addEventListener("click", () => {
+    location.reload();
     getCurrentLocation();
   });
+
+window.onload = function () {
+  getCurrentLocation();
+};

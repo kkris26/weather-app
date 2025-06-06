@@ -12,7 +12,7 @@
         class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
       >
         <div
-          class="bg-gray-100 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 md:gap-4 relative"
+          class="bg-gray-100 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 relative"
         >
           <button
             id="close-search"
@@ -42,39 +42,39 @@
           </form>
           <div
             id="display"
-            class="flex flex-col gap-2 md:gap-3 max-h-100 overflow-auto"
+            class="flex flex-col gap-2 max-h-100 overflow-auto"
           ></div>
         </div>
       </div>
     </section>
     <section class="flex flex-col gap-4" id="content">
       <div
-        class="bg-[url(assets/bg.jpg)] relative w-full bg-cover h-screen flex flex-col items-center justify-between p-4 text-white"
+        class=" bg-gray-600 bg-[position:center_20%] relative w-full bg-cover h-screen flex flex-col items-center justify-between p-4 text-white"
         id="current"
       >
         <div class="absolute inset-0 bg-black/10"></div>
         <div
           class="flex flex-col justify-between relative w-full items-center h-[100%]"
         >
-          <div class="flex items-center justify-between w-full">
-            <div class="flex gap-1 items-center">
+          <div class="flex gap-4 items-center  w-full ">
+            <div class="flex gap-1 items-center flex-1  min-w-0">
               <img class="w-5 md:w-6" src="assets/map-icon-2.svg" />
-              <div>
+              <div class=" w-full  min-w-0">
                 <h1
-                  class="text-sm md:text-md max-w-[200px] md:max-w-[350px] truncate"
+                  class="text-sm md:text-md max-w-full  md:max-w-[40%] truncate"
                   id="location-name"
                 >
                   Loading ...
                 </h1>
                 <p
-                  class="md:text-xs text-[10px] mt-[-3px] text-white/70"
+                  class="md:text-xs text-[10px] mt-[-3px] text-white/70 max-w-[200px] md:max-w-[350px] truncate"
                   id="sub-location-name"
                 >
                   Loading ...
                 </p>
               </div>
             </div>
-            <div class="flex gap-2">
+            <div class="flex gap-2  w-fit justify-end">
               <button
                 class="p-2 bg-white/20 rounded backdrop-blur-sm cursor-pointer"
                 id="btn-search"
@@ -95,16 +95,16 @@
             <div
               class="absolute flex justify-between items-center w-full top-5 px-5"
             >
-              <p class="text-md">Today</p>
+              <p class="text-md" id="today">Loading ...</p>
 
               <h2 class="text-md" id="current-temperature">...</h2>
             </div>
             <img
-              class="w-full p-4"
+              class="w-full p-15"
               id="img-current-weather"
-              src="assets/clear.svg"
+              src="assets/tube-spinner.svg"
             />
-            <h2 class="absolute bottom-5 text-md" id="current-weather">
+            <h2 class="absolute capitalize bottom-5 text-md px-5 text-center" id="current-weather">
               Loading ...
             </h2>
           </div>
@@ -130,9 +130,11 @@
           class="w-full h-70 md:h-80 overflow-x-auto pt-4 mt-1 border-t-1 border-white/60"
         >
           <div
-            class="grid h-[100%] md:gap-3 gap-2 grid-cols-6 md:w-full w-250"
+            class="grid h-[100%] md:gap-3 gap-2  md:w-full "
             id="weather"
-          ></div>
+          >
+          <div class="backdrop-blur-sm bg-white/20 rounded-lg flex items-center justify-center"><p id="weather-loading">Loading ...</p></div>
+        </div>
         </div>
       </div>
     </section>
