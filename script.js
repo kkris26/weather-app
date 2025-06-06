@@ -192,16 +192,19 @@ btnSearch.addEventListener("click", () => {
   openPopup();
 });
 
-// const defaultData = "sumatra";
-// getLocation(defaultData);
-// document.getElementById("lokasiInput").value = defaultData;
+const defaultData = "sumatra";
+getLocation(defaultData);
+document.getElementById("lokasiInput").value = defaultData;
 async function getLocation(value) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${value}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
     const result = await data.results;
-    console.log(result);
+    if (!result) {
+      throw "no-result";
+    }
+    console.log(data);
 
     const display = document.getElementById("display");
     display.innerHTML = "";
@@ -220,17 +223,17 @@ async function getLocation(value) {
       const subLocation = [region, province, country];
       const subLocationJoin = subLocation.filter(Boolean).join(", ");
       button.className =
-        "card border-1 border-black/10 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
+        "card border-1 border-white/30 bg-gray-300/40 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
       button.innerHTML = `
                     <div class="flex gap-2">
-              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-black/10">
+              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-white/30">
                     <div class="flex flex-col items-start justify-center w-100%">
-                    <h2 class="text-black text-sm" >${location}, ${country}</h2>
+                    <h2 class="text-white text-sm" >${location}, ${country}</h2>
                     
                     ${
                       regionProvinceJoin
                         ? `<div class="flex">
-             <p class="text-[10px] md:text-[-14] text-left text-black/60">${regionProvinceJoin}</p>  
+             <p class="text-[10px] md:text-[-14] text-left text-white/70">${regionProvinceJoin}</p>  
                  </div>`
                         : ""
                     }
@@ -245,9 +248,16 @@ async function getLocation(value) {
       display.appendChild(button);
     }
   } catch (error) {
-    display.innerHTML = `
-      <p class="text-red-500/70">"${value}" not found</p>
+    console.log(error);
+    if (error === "no-result") {
+      display.innerHTML = `
+      <p class="text-white md:text-sm text-xs">"${value}" not found</p>
       `;
+    } else {
+      display.innerHTML = `
+      <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
+      `;
+    }
   }
 }
 const form = document.getElementById("locationForm");
@@ -434,13 +444,17 @@ function getCurrentLocation() {
   }
   function errorMessage(error) {
     console.log(error);
+    console.log(error.message);
     const errorText = "Error";
 
     errorGetCurrentLocation = true;
 
     cardLocationDaily();
-
-    currentLocationName.innerText = "Location access was denied";
+    if (error.code === 1) {
+      currentLocationName.innerText = "Location access was denied";
+    } else if (error.code === 2) {
+      currentLocationName.innerText = error.message;
+    }
     currentSubLocation.innerText = errorText;
     currentTime.innerText = errorText;
     currentWeather.innerText = errorText;

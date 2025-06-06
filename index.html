@@ -6,46 +6,43 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
-    <section>
+    <section
+      id="pop-up-search"
+      class="fixed inset-0 bg-black/60 flex items-center justify-center z-1 hidden"
+    >
       <div
-        id="pop-up-search"
-        class="fixed inset-0 bg-black/50 flex items-center justify-center z-51 hidden"
+        class="backdrop-blur-sm bg-white/40 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 relative"
       >
-        <div
-          class="bg-gray-100 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 relative"
+        <button
+          id="close-search"
+          class="z-90 cursor-pointer absolute p-1 md:p-1 bg-red-400 hover:bg-red-500 text-black top-0 right-[-28px] md:right-[-36px] rounded-full"
         >
+          <img
+            class="w-4 md:w-5"
+            src="assets/close-btn-white.svg"
+            alt=""
+            srcset=""
+          />
+        </button>
+        <form action="" id="locationForm" class="w-full flex gap-2">
+          <input
+            type="text"
+            id="lokasiInput"
+            placeholder="Search for a city..."
+            required
+            class="py-3 px-3 border-1 text-white border-white/30 rounded-lg flex-1 text-sm placeholder:text-white"
+          />
           <button
-            id="close-search"
-            class="z-90 cursor-pointer absolute p-1 md:p-1 bg-red-400 hover:bg-red-500 text-black top-0 right-[-28px] md:right-[-36px] rounded-full"
+            type="submit"
+            class="cursor-pointer text-sm bg-black hover:bg-neutral-800 text-white px-4 rounded-lg"
           >
-            <img
-              class="w-4 md:w-5"
-              src="assets/close-btn-white.svg"
-              alt=""
-              srcset=""
-            />
+            Search
           </button>
-          <form action="" id="locationForm" class="w-full flex gap-2">
-            <input
-              type="text"
-              id="lokasiInput"
-              placeholder="Search for a city..."
-              required
-              class="py-3 px-3 border-1 border-black/10 rounded-lg flex-1 text-sm"
-            />
-            <button
-              type="submit"
-              class="cursor-pointer text-sm bg-black hover:bg-neutral-800 text-white px-4 rounded-lg"
-            >
-              Search
-            </button>
-          </form>
-          <div
-            id="display"
-            class="flex flex-col gap-2 max-h-100 overflow-auto"
-          >
-          <p class="text-neutral-600 md:text-sm text-xs">Enter a city name to see the list</p>
-        </div>
+        </form>
+        <div id="display" class="flex flex-col gap-2 max-h-100 overflow-auto">
+          <p class="text-white md:text-sm text-xs">
+            Enter a city name to see the list
+          </p>
         </div>
       </div>
     </section>
@@ -134,7 +131,10 @@
         <div
           class="w-full h-70 md:h-80 overflow-x-auto pt-4 mt-1 border-t-1 border-white/60"
         >
-          <div class="grid h-[100%] grid-cols-6 md:gap-3 gap-2 md:w-full w-230" id="weather">
+          <div
+            class="grid h-[100%] grid-cols-6 md:gap-3 gap-2 md:w-full w-230"
+            id="weather"
+          >
             <!-- <div
               class="backdrop-blur-sm bg-white/20 rounded-lg flex items-center justify-center"
             >
@@ -149,14 +149,14 @@
       class="inset-0 fixed flex justify-center items-center bg-black/60 hidden"
     >
       <div
-        class="p-6 w-70 md:w-80 flex flex-col gap-4 justify-center items-center rounded-lg relative bg-white "
+        class="p-6 w-70 md:w-80 flex flex-col gap-4 justify-center items-center rounded-lg relative backdrop-blur-sm bg-white/40"
       >
-      <img src="assets/error_icon.svg" class="w-20" alt="">
-        <p id="error-text" class="text-neutral-600 text-center text-sm "></p>
-        
+        <img src="assets/error_icon.svg" class="w-20 border-2 border-white rounded-full" alt="" />
+        <p id="error-text" class="text-white text-center text-sm"></p>
+
         <button
           id="close-error-popup"
-          class="absolute cursor-pointer w-6 top-0 right-[-30px] bg-red-400 hover:bg-red-500 rounded-full p-1"
+          class=" absolute cursor-pointer w-6 top-0 right-[-30px] bg-red-400 hover:bg-red-500 rounded-full p-1"
         >
           <img src="assets/close-btn-white.svg" alt="" srcset="" />
         </button>
