@@ -271,7 +271,7 @@ form.addEventListener("submit", (e) => {
 
 async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
-  const proxyURL = `https://apfi.allorigins.win/get?url=${encodeURIComponent(
+  const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
     url
   )}`;
 
