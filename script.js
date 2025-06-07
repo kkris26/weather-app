@@ -381,7 +381,7 @@ async function getWeather(lat, lon, location, country) {
 
       const card = document.createElement("div");
       card.className =
-        "backdrop-blur-sm hover:bg-white/25 w-full text-[8px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
+        "backdrop-blur-sm  hover:bg-white/25 w-full text-[8px] md:text-xs flex flex-col justify-between bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
               <div class="flex gap-1 justify-between">
