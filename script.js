@@ -254,9 +254,7 @@ async function getLocation(value) {
       <p class="text-white md:text-sm text-xs">"${value}" not found</p>
       `;
     } else {
-      display.innerHTML = `
-      <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
-      `;
+      errorPopup("Cannot connect to the server. Please try again later.");
     }
   }
 }
