@@ -255,7 +255,8 @@ async function getLocation(value) {
       `;
     } else {
       const seacrhCityInput = document.getElementById("lokasiInput").value;
-      if (!seacrhCityInput == 0) {
+      if (!seacrhCityInput.length == 0) {
+        console.log(seacrhCityInput.length);
         display.innerHTML = `
         <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
         `;
