@@ -176,16 +176,16 @@ function formatTime(value) {
 }
 
 //   open and close popup
-const popUp = document.getElementById("pop-up-search");
+const popUpSearch = document.getElementById("pop-up-search");
 const btnSearch = document.getElementById("btn-search");
-const btnClose = document.getElementById("close-search");
+const btnCloseSearch = document.getElementById("close-search");
 function openPopup() {
-  popUp.classList.remove("hidden");
+  popUpSearch.classList.remove("hidden");
 }
 function closePopup() {
-  popUp.classList.add("hidden");
+  popUpSearch.classList.add("hidden");
 }
-btnClose.addEventListener("click", () => {
+btnCloseSearch.addEventListener("click", () => {
   closePopup();
 });
 btnSearch.addEventListener("click", () => {
