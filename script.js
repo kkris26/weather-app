@@ -254,6 +254,12 @@ async function getLocation(value) {
       <p class="text-white md:text-sm text-xs">"${value}" not found</p>
       `;
     } else {
+      const seacrhCityInput = document.getElementById("lokasiInput").value;
+      if (!seacrhCityInput == 0) {
+        display.innerHTML = `
+        <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
+        `;
+      }
       errorPopup("Cannot connect to the server. Please try again later.");
       closePopupSearch();
     }
