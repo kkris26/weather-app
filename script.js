@@ -179,17 +179,17 @@ function formatTime(value) {
 const popUpSearch = document.getElementById("pop-up-search");
 const btnSearch = document.getElementById("btn-search");
 const btnCloseSearch = document.getElementById("close-search");
-function openPopup() {
+function openPopupSearch() {
   popUpSearch.classList.remove("hidden");
 }
-function closePopup() {
+function closePopupSearch() {
   popUpSearch.classList.add("hidden");
 }
 btnCloseSearch.addEventListener("click", () => {
-  closePopup();
+  closePopupSearch();
 });
 btnSearch.addEventListener("click", () => {
-  openPopup();
+  openPopupSearch();
 });
 
 const defaultData = "sumatra";
@@ -241,7 +241,7 @@ async function getLocation(value) {
         `;
 
       button.addEventListener("click", () => {
-        closePopup();
+        closePopupSearch();
         getWeather(lat, lon, location, subLocationJoin);
       });
 
