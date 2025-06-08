@@ -255,6 +255,7 @@ async function getLocation(value) {
       `;
     } else {
       errorPopup("Cannot connect to the server. Please try again later.");
+      closePopupSearch();
     }
   }
 }
