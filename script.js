@@ -277,29 +277,26 @@ form.addEventListener("submit", (e) => {
 
 async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
-  const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
-    url
-  )}`;
+  // const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
+  //   url
+  // )}`;
 
   document.getElementById("location-name").innerText = "Geting Location ....";
   document.getElementById("sub-location-name").innerText =
     "Geting Location ....";
   try {
-    const response = await fetch(proxyURL);
+    const response = await fetch(url);
     console.log(response);
-    if (!response.ok) {
-      throw "Gagal Fetch";
-    }
     console.log("fetching");
-    const result = await response.json();
-    console.log(result)
-    const data = JSON.parse(result.contents);
+    const data = await response.json();
+    // console.log(result)
+    // const data = JSON.parse(result.contents);
     console.log(data);
     const location = data.display_name;
     const country = data.address.country;
     getWeather(lat, lon, location, country);
   } catch (error) {
-    console.log(error);
+    console.log(`${error} openstreetmap`);
     getWeather(lat, lon);
   }
 }
