@@ -457,7 +457,7 @@ function getCurrentLocation() {
 
     errorGetCurrentLocation = true;
 
-    cardLocationDaily();
+    loadingCardLocationDaily();
     if (error.code === 1) {
       currentLocationName.innerText = "Location access was denied";
     } else if (error.code === 2) {
@@ -485,7 +485,7 @@ document
     getCurrentLocation();
   });
 
-function cardLocationDaily() {
+function loadingCardLocationDaily() {
   weather.innerHTML = "";
   for (let i = 1; i < 7; i++) {
     const text = errorGetCurrentLocation ? "Error" : "Loading ..";
@@ -525,5 +525,5 @@ function cardLocationDaily() {
 
 window.onload = function () {
   getCurrentLocation();
-  cardLocationDaily();
+  loadingCardLocationDaily();
 };
