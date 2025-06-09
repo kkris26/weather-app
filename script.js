@@ -313,7 +313,8 @@ const currentWindSpeed = document.getElementById("current-wind-speed");
 const currentTime = document.getElementById("current-time");
 const weatherLoading = document.getElementById("weather-loading");
 const weather = document.getElementById("weather");
-
+const dotsText = "...";
+let bgImage = "";
 // error popup
 const errorContainer = document.getElementById("error-popup");
 const errorText = document.getElementById("error-text");
@@ -356,6 +357,7 @@ async function getWeather(lat, lon, location, subLocation) {
       ? subLocation
       : "Failed get location name";
     currentTemperature.innerText = `${currentData.temperature_2m} ${units.temperature_2m}`;
+
     currentImgWeather.src = `assets/${
       isDay ? weatherData.day_logo : weatherData.night_logo
     }`;
@@ -370,8 +372,11 @@ async function getWeather(lat, lon, location, subLocation) {
 
     const nightBG = "bg-[url(assets/bg-night.webp)]";
     const dayBG = "bg-[url(assets/bg-day.webp)]";
-    currentDisplay.classList.add(currentData.is_day ? dayBG : nightBG);
-    currentDisplay.classList.remove(currentData.is_day ? nightBG : dayBG);
+    const removeCurrentBg = currentData.is_day ? nightBG : dayBG;
+    const addCurrentBg = currentData.is_day ? dayBG : nightBG;
+    bgImage = addCurrentBg;
+    currentDisplay.classList.remove(removeCurrentBg);
+    currentDisplay.classList.add(addCurrentBg);
 
     weather.innerHTML = "";
     for (let i = 1; i < daily.time.length; i++) {
@@ -426,7 +431,6 @@ async function getWeather(lat, lon, location, subLocation) {
       errorPopup(text);
     } else {
       console.log(error);
-      console.log("gagal");
       const text = "Cannot connect to the server. Please try again later.";
       errorPopup(text);
     }
@@ -459,17 +463,25 @@ function getCurrentLocation() {
     } else if (error.code === 2) {
       currentLocationName.innerText = error.message;
     }
+
     currentSubLocation.innerText = errorText;
     currentTime.innerText = errorText;
+    currentHumidity.innerText = dotsText;
+    currentWindSpeed.innerText = dotsText;
+    currentTemperature.innerText = dotsText;
     currentWeather.innerText = errorText;
     today.innerText = errorText;
+    currentImgWeather.className = ("w-full", "p-10");
+    currentImgWeather.src = "assets/tube-spinner.svg";
+    if (bgImage) {
+      currentDisplay.classList.remove(bgImage);
+    }
   }
 }
 
 document
   .getElementById("btn-current-location")
   .addEventListener("click", () => {
-    location.reload();
     getCurrentLocation();
   });
 
