@@ -292,6 +292,7 @@ async function getWeatherCurrentLocation(lat, lon) {
     }
     console.log("fetching");
     const result = await response.json();
+    console.log(result)
     const data = JSON.parse(result.contents);
     console.log(data);
     const location = data.display_name;
@@ -331,7 +332,7 @@ btnCloseerrorPopup.addEventListener("click", () => {
 });
 // error popup
 
-async function getWeather(lat, lon, location, country) {
+async function getWeather(lat, lon, location, subLocation) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
@@ -354,8 +355,8 @@ async function getWeather(lat, lon, location, country) {
     currentLocationName.innerText = location
       ? location
       : "Failed get location name";
-    currentSubLocation.innerText = country
-      ? country
+    currentSubLocation.innerText = subLocation
+      ? subLocation
       : "Failed get location name";
     currentTemperature.innerText = `${currentData.temperature_2m} ${units.temperature_2m}`;
     currentImgWeather.src = `assets/${
