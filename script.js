@@ -281,7 +281,6 @@ async function getWeatherCurrentLocation(lat, lon) {
   //   url
   // )}`;
 
-
   // loading when getting data
   loadingCardLocationDaily();
   loadContent();
@@ -315,7 +314,7 @@ const currentTime = document.getElementById("current-time");
 const weatherLoading = document.getElementById("weather-loading");
 const weather = document.getElementById("weather");
 const dotsText = "...";
-const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ..";
+
 let bgImage = "";
 // error popup
 const errorContainer = document.getElementById("error-popup");
@@ -334,7 +333,7 @@ btnCloseerrorPopup.addEventListener("click", () => {
 
 async function getWeather(lat, lon, location, subLocation) {
   loadContent();
-  loadingCardLocationDaily()
+  loadingCardLocationDaily();
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
@@ -461,6 +460,7 @@ function getCurrentLocation() {
 
     errorGetCurrentLocation = true;
 
+    loadContent();
     loadingCardLocationDaily();
     if (error.code === 1) {
       currentLocationName.innerText = "Location access was denied";
@@ -481,6 +481,7 @@ document
   });
 
 function loadingCardLocationDaily() {
+  const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ...";
   weather.innerHTML = "";
   for (let i = 1; i < 7; i++) {
     const card = document.createElement("div");
@@ -517,8 +518,9 @@ function loadingCardLocationDaily() {
 }
 
 function loadContent() {
+  const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ...";
   currentLocationName.innerText = "Geting Location ....";
-  currentSubLocation.innerText = "Geting Location ....";
+  currentSubLocation.innerText = loadTextContent;
   currentTime.innerText = loadTextContent;
   currentHumidity.innerText = dotsText;
   currentWindSpeed.innerText = dotsText;
