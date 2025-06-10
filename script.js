@@ -281,12 +281,10 @@ async function getWeatherCurrentLocation(lat, lon) {
   //   url
   // )}`;
 
-  document.getElementById("location-name").innerText = "Geting Location ....";
-  document.getElementById("sub-location-name").innerText =
-    "Geting Location ....";
 
-    // loading when getting data
+  // loading when getting data
   loadingCardLocationDaily();
+  loadContent();
   try {
     const response = await fetch(url);
     console.log(response);
@@ -317,6 +315,7 @@ const currentTime = document.getElementById("current-time");
 const weatherLoading = document.getElementById("weather-loading");
 const weather = document.getElementById("weather");
 const dotsText = "...";
+const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ..";
 let bgImage = "";
 // error popup
 const errorContainer = document.getElementById("error-popup");
@@ -334,6 +333,8 @@ btnCloseerrorPopup.addEventListener("click", () => {
 // error popup
 
 async function getWeather(lat, lon, location, subLocation) {
+  loadContent();
+  loadingCardLocationDaily()
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
   try {
     const response = await fetch(url);
@@ -364,7 +365,7 @@ async function getWeather(lat, lon, location, subLocation) {
     currentImgWeather.src = `assets/${
       isDay ? weatherData.day_logo : weatherData.night_logo
     }`;
-    currentImgWeather.className = ("w-full", "p-4");
+    currentImgWeather.classList.replace("p-10", "p-4");
     currentWeather.innerText = weatherData.weather;
     currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
     today.innerText = "Today";
@@ -467,15 +468,6 @@ function getCurrentLocation() {
       currentLocationName.innerText = error.message;
     }
 
-    currentSubLocation.innerText = errorText;
-    currentTime.innerText = errorText;
-    currentHumidity.innerText = dotsText;
-    currentWindSpeed.innerText = dotsText;
-    currentTemperature.innerText = dotsText;
-    currentWeather.innerText = errorText;
-    today.innerText = errorText;
-    currentImgWeather.className = ("w-full", "p-10");
-    currentImgWeather.src = "assets/tube-spinner.svg";
     if (bgImage) {
       currentDisplay.classList.remove(bgImage);
     }
@@ -491,22 +483,20 @@ document
 function loadingCardLocationDaily() {
   weather.innerHTML = "";
   for (let i = 1; i < 7; i++) {
-    const text = errorGetCurrentLocation ? "Error" : "Loading ..";
-
     const card = document.createElement("div");
     card.className =
       "backdrop-blur-sm w-full text-[8px] md:text-xs flex flex-col justify-between hover:bg-white/25 bg-white/30 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
     card.innerHTML = `
               <div class="flex gap-1 justify-between">
-                <p>${text}</p>
+                <p>${loadTextContent}</p>
                 <p class="text-end">... °C - ... °C</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
               >
                 <img class="w-30 p-8" src="assets/tube-spinner.svg" />
-                <p class="absolute bottom-0 capitalize text-[10px] md:text-xs px-4 text-center">${text}</p>
+                <p class="absolute bottom-0 capitalize text-[10px] md:text-xs px-4 text-center">${loadTextContent}</p>
       
     
               </div>
@@ -526,7 +516,21 @@ function loadingCardLocationDaily() {
   }
 }
 
+function loadContent() {
+  currentLocationName.innerText = "Geting Location ....";
+  currentSubLocation.innerText = "Geting Location ....";
+  currentTime.innerText = loadTextContent;
+  currentHumidity.innerText = dotsText;
+  currentWindSpeed.innerText = dotsText;
+  currentTemperature.innerText = dotsText;
+  currentWeather.innerText = loadTextContent;
+  today.innerText = loadTextContent;
+  currentImgWeather.className = ("w-full", "p-10");
+  currentImgWeather.src = "assets/tube-spinner.svg";
+}
+
 window.onload = function () {
   loadingCardLocationDaily();
   getCurrentLocation();
+  loadContent();
 };
