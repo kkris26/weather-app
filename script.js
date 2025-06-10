@@ -284,6 +284,9 @@ async function getWeatherCurrentLocation(lat, lon) {
   document.getElementById("location-name").innerText = "Geting Location ....";
   document.getElementById("sub-location-name").innerText =
     "Geting Location ....";
+
+    // loading when getting data
+  loadingCardLocationDaily();
   try {
     const response = await fetch(url);
     console.log(response);
@@ -524,6 +527,6 @@ function loadingCardLocationDaily() {
 }
 
 window.onload = function () {
-  getCurrentLocation();
   loadingCardLocationDaily();
+  getCurrentLocation();
 };
