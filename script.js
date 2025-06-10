@@ -256,7 +256,6 @@ async function getLocation(value) {
     } else {
       const seacrhCityInput = document.getElementById("lokasiInput").value;
       if (!seacrhCityInput.length == 0) {
-        console.log(seacrhCityInput.length);
         display.innerHTML = `
         <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
         `;
@@ -277,20 +276,11 @@ form.addEventListener("submit", (e) => {
 
 async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
-  // const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(
-  //   url
-  // )}`;
-
-  // loading when getting data
-  loadingCardLocationDaily();
-  loadContent();
   try {
     const response = await fetch(url);
     console.log(response);
     console.log("fetching");
     const data = await response.json();
-    // console.log(result)
-    // const data = JSON.parse(result.contents);
     console.log(data);
     const location = data.display_name;
     const country = data.address.country;
@@ -441,10 +431,21 @@ async function getWeather(lat, lon, location, subLocation) {
 }
 
 function getCurrentLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, errorMessage);
+  if (navigator.onLine) {
+    if (navigator.geolocation) {
+      errorGetCurrentLocation = false;
+      navigator.geolocation.getCurrentPosition(showPosition, errorMessage);
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
   } else {
-    console.log("Geolocation is not supported by this browser.");
+    errorGetCurrentLocation = true;
+    loadContent();
+    const text = "Cannot connect to the server. Please try again later.";
+    if (bgImage) {
+      currentDisplay.classList.remove(bgImage);
+    }
+    errorPopup(text);
   }
 
   function showPosition(position) {
@@ -456,7 +457,6 @@ function getCurrentLocation() {
   function errorMessage(error) {
     console.log(error);
     console.log(error.message);
-    const errorText = "Error";
 
     errorGetCurrentLocation = true;
 
@@ -519,7 +519,9 @@ function loadingCardLocationDaily() {
 
 function loadContent() {
   const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ...";
-  currentLocationName.innerText = "Geting Location ....";
+  currentLocationName.innerText = errorGetCurrentLocation
+    ? "Error"
+    : "Geting Location ....";
   currentSubLocation.innerText = loadTextContent;
   currentTime.innerText = loadTextContent;
   currentHumidity.innerText = dotsText;
@@ -534,5 +536,4 @@ function loadContent() {
 window.onload = function () {
   loadingCardLocationDaily();
   getCurrentLocation();
-  loadContent();
 };
