@@ -134,7 +134,7 @@ const weatherCodes = {
 };
 
 let errorGetCurrentLocation = false;
-const displayCountry = document.getElementById("display-country");
+const displayLocation = document.getElementById("display-country");
 const currentDisplay = document.getElementById("current");
 const currentLocationName = document.getElementById("location-name");
 const currentSubLocation = document.getElementById("sub-location-name");
@@ -206,9 +206,12 @@ btnSearch.addEventListener("click", () => {
 });
 // function open and close popup
 
-const defaultData = "sumatra";
-getLocation(defaultData);
-document.getElementById("lokasiInput").value = defaultData;
+// set default value search city
+// const defaultData = "sumatra";
+// getLocation(defaultData);
+// document.getElementById("lokasiInput").value = defaultData;
+// set default value search city
+// get location by
 async function getLocation(value) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${value}`;
   try {
@@ -220,9 +223,9 @@ async function getLocation(value) {
     }
     console.log(data);
 
-    displayCountry.innerHTML = "";
+    displayLocation.innerHTML = "";
     for (let i = 0; i < result.length; i++) {
-      const countryBox = document.createElement("div");
+      const locationBox = document.createElement("div");
       const location = result[i].name;
       const country = result[i].country;
       const countryCode = result[i].country_code.toLowerCase();
@@ -234,9 +237,9 @@ async function getLocation(value) {
       const regionProvinceJoin = regionProvince.filter(Boolean).join(", ");
       const subLocation = [region, province, country];
       const subLocationJoin = subLocation.filter(Boolean).join(", ");
-      countryBox.className =
+      locationBox.className =
         "card border-1 border-white/30 bg-gray-300/40 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
-      countryBox.innerHTML = `
+      locationBox.innerHTML = `
                     <div class="flex gap-2">
               <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-white/30">
                     <div class="flex flex-col items-start justify-center w-100%">
@@ -252,23 +255,23 @@ async function getLocation(value) {
               </div>
         `;
 
-      countryBox.addEventListener("click", () => {
+      locationBox.addEventListener("click", () => {
         closePopupSearch();
         getWeather(lat, lon, location, subLocationJoin);
       });
 
-      displayCountry.appendChild(countryBox);
+      displayLocation.appendChild(locationBox);
     }
   } catch (error) {
     console.log(error);
     if (error === "no-result") {
-      displayCountry.innerHTML = `
+      displayLocation.innerHTML = `
       <p class="text-white md:text-sm text-xs">"${value}" not found</p>
       `;
     } else {
       const seacrhCityInput = document.getElementById("lokasiInput").value;
       if (!seacrhCityInput.length == 0) {
-        displayCountry.innerHTML = `
+        displayLocation.innerHTML = `
         <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
         `;
       }
@@ -277,6 +280,7 @@ async function getLocation(value) {
     }
   }
 }
+
 const form = document.getElementById("locationForm");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
