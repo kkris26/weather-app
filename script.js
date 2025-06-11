@@ -135,6 +135,7 @@ const weatherCodes = {
 
 let errorGetCurrentLocation = false;
 const displayLocation = document.getElementById("display-country");
+const weatherDailyDisplay = document.getElementById("weather-daily");
 const currentDisplay = document.getElementById("current");
 const currentLocationName = document.getElementById("location-name");
 const currentSubLocation = document.getElementById("sub-location-name");
@@ -207,9 +208,9 @@ btnSearch.addEventListener("click", () => {
 // function open and close popup
 
 // set default value search city
-// const defaultData = "sumatra";
-// getLocation(defaultData);
-// document.getElementById("lokasiInput").value = defaultData;
+const defaultData = "sumatra";
+getLocation(defaultData);
+document.getElementById("lokasiInput").value = defaultData;
 // set default value search city
 // get location by
 async function getLocation(value) {
@@ -222,8 +223,9 @@ async function getLocation(value) {
       throw "no-result";
     }
     console.log(data);
-
+    // kosongkan displayLocation agar tidak numpuk dengan location lain
     displayLocation.innerHTML = "";
+    // perulangan untuk menampilkan list location
     for (let i = 0; i < result.length; i++) {
       const locationBox = document.createElement("div");
       const location = result[i].name;
@@ -264,6 +266,7 @@ async function getLocation(value) {
     }
   } catch (error) {
     console.log(error);
+    // dapat error dari throw
     if (error === "no-result") {
       displayLocation.innerHTML = `
       <p class="text-white md:text-sm text-xs">"${value}" not found</p>
@@ -280,7 +283,7 @@ async function getLocation(value) {
     }
   }
 }
-
+// search location by form
 const form = document.getElementById("locationForm");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -289,7 +292,8 @@ form.addEventListener("submit", (e) => {
     getLocation(value);
   }
 });
-
+// search location by form
+// Mencari cuaca di lokasi saat ini dengan lat dan lon dari device
 async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
   try {
@@ -303,6 +307,7 @@ async function getWeatherCurrentLocation(lat, lon) {
     getWeather(lat, lon, location, country);
   } catch (error) {
     console.log(`${error} openstreetmap`);
+    // melanjutkan mencari cuaca tanpa data lokasi saat ini
     getWeather(lat, lon);
   }
 }
@@ -324,6 +329,7 @@ function closeErrorPopup() {
 btnCloseerrorPopup.addEventListener("click", closeErrorPopup);
 // error popup
 
+// mencari data dari api open meteo
 async function getWeather(lat, lon, location, subLocation) {
   errorGetCurrentLocation = false;
   loadContent();
@@ -345,8 +351,7 @@ async function getWeather(lat, lon, location, subLocation) {
     console.log(currentData);
     console.log(daily);
 
-    const weather = document.getElementById("weather");
-    // to html
+    // insert to html
     currentLocationName.innerText = location
       ? location
       : "Failed get location name";
@@ -354,7 +359,6 @@ async function getWeather(lat, lon, location, subLocation) {
       ? subLocation
       : "Failed get location name";
     currentTemperature.innerText = `${currentData.temperature_2m} ${units.temperature_2m}`;
-
     currentImgWeather.src = `assets/${
       isDay ? weatherData.day_logo : weatherData.night_logo
     }`;
@@ -363,10 +367,9 @@ async function getWeather(lat, lon, location, subLocation) {
     currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
     today.innerText = "Today";
     currentWindSpeed.innerText = `${currentData.wind_speed_10m} ${units.wind_speed_10m}`;
-
     currentTime.innerText = formatDateTime(currentData.time);
-    // to html
-
+    // insert to html
+    // ganti bg sesuai situasi lokasi
     const nightBG = "bg-[url(assets/bg-night.webp)]";
     const dayBG = "bg-[url(assets/bg-day.webp)]";
     const removeCurrentBg = currentData.is_day ? nightBG : dayBG;
@@ -374,8 +377,9 @@ async function getWeather(lat, lon, location, subLocation) {
     bgImage = addCurrentBg;
     currentDisplay.classList.remove(removeCurrentBg);
     currentDisplay.classList.add(addCurrentBg);
+    // ganti bg sesuai situasi lokasi
 
-    weather.innerHTML = "";
+    weatherDailyDisplay.innerHTML = "";
     for (let i = 1; i < daily.time.length; i++) {
       const date = daily.time[i];
       const code = daily.weather_code[i];
@@ -420,7 +424,7 @@ async function getWeather(lat, lon, location, subLocation) {
                   <p>${formatTime(sunset)}</p>
                 </div>
               </div>`;
-      weather.appendChild(card);
+      weatherDailyDisplay.appendChild(card);
     }
   } catch (error) {
     errorGetCurrentLocation = true;
@@ -437,6 +441,7 @@ async function getWeather(lat, lon, location, subLocation) {
   }
 }
 
+// mencari lokasi lan dan lon saat ini
 function getCurrentLocation() {
   if (navigator.onLine) {
     if (navigator.geolocation) {
@@ -481,15 +486,19 @@ function getCurrentLocation() {
   }
 }
 
+// event untuk mendapatkan data lokasi saat ini
 document
   .getElementById("btn-current-location")
   .addEventListener("click", () => {
     getCurrentLocation();
   });
+// event untuk mendapatkan data lokasi saat ini
 
+// menampilkan animasi loading sebelum data tersedia
 function loadingCardLocationDaily() {
+  // menyesuakan text ketika terjadi error maka tampilkan informasi error
   const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ...";
-  weather.innerHTML = "";
+  weatherDailyDisplay.innerHTML = "";
   for (let i = 1; i < 7; i++) {
     const card = document.createElement("div");
     card.className =
@@ -520,11 +529,12 @@ function loadingCardLocationDaily() {
                   <p>...</p>
                 </div>
               </div>`;
-    weather.appendChild(card);
+    weatherDailyDisplay.appendChild(card);
   }
 }
-
+// menampilkan animasi loading sebelum mendapatkan data
 function loadContent() {
+  // menyesuakan text ketika terjadi error maka tampilkan informasi error
   const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ...";
   currentLocationName.innerText = errorGetCurrentLocation
     ? "Error"
@@ -540,6 +550,7 @@ function loadContent() {
   currentImgWeather.src = "assets/tube-spinner.svg";
 }
 
+// memulai dengan mencari lokasi saat ini dan menampilkan loading pada daily weather
 window.onload = function () {
   loadingCardLocationDaily();
   getCurrentLocation();
