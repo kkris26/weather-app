@@ -209,7 +209,7 @@ async function getLocation(value) {
     display.innerHTML = "";
 
     for (let i = 0; i < result.length; i++) {
-      const button = document.createElement("button");
+      const countryBox = document.createElement("div");
       const location = result[i].name;
       const country = result[i].country;
       const countryCode = result[i].country_code.toLowerCase();
@@ -221,9 +221,9 @@ async function getLocation(value) {
       const regionProvinceJoin = regionProvince.filter(Boolean).join(", ");
       const subLocation = [region, province, country];
       const subLocationJoin = subLocation.filter(Boolean).join(", ");
-      button.className =
+      countryBox.className =
         "card border-1 border-white/30 bg-gray-300/40 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
-      button.innerHTML = `
+      countryBox.innerHTML = `
                     <div class="flex gap-2">
               <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-white/30">
                     <div class="flex flex-col items-start justify-center w-100%">
@@ -239,12 +239,12 @@ async function getLocation(value) {
               </div>
         `;
 
-      button.addEventListener("click", () => {
+      countryBox.addEventListener("click", () => {
         closePopupSearch();
         getWeather(lat, lon, location, subLocationJoin);
       });
 
-      display.appendChild(button);
+      display.appendChild(countryBox);
     }
   } catch (error) {
     console.log(error);
