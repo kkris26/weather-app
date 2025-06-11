@@ -322,6 +322,7 @@ btnCloseerrorPopup.addEventListener("click", () => {
 // error popup
 
 async function getWeather(lat, lon, location, subLocation) {
+  errorGetCurrentLocation = false;
   loadContent();
   loadingCardLocationDaily();
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
@@ -419,6 +420,9 @@ async function getWeather(lat, lon, location, subLocation) {
       weather.appendChild(card);
     }
   } catch (error) {
+    errorGetCurrentLocation = true;
+    loadContent();
+    loadingCardLocationDaily();
     if (error == "bad request") {
       const text = `Oops! We couldn’t find any data for “${location}”`;
       errorPopup(text);
@@ -521,7 +525,7 @@ function loadContent() {
   const loadTextContent = errorGetCurrentLocation ? "Error" : "Loading ...";
   currentLocationName.innerText = errorGetCurrentLocation
     ? "Error"
-    : "Geting Location ....";
+    : "Geting Location Data ....";
   currentSubLocation.innerText = loadTextContent;
   currentTime.innerText = loadTextContent;
   currentHumidity.innerText = dotsText;
