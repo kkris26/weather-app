@@ -134,6 +134,21 @@ const weatherCodes = {
 };
 
 let errorGetCurrentLocation = false;
+const displayCountry = document.getElementById("display-country");
+const currentDisplay = document.getElementById("current");
+const currentLocationName = document.getElementById("location-name");
+const currentSubLocation = document.getElementById("sub-location-name");
+const currentTemperature = document.getElementById("current-temperature");
+const currentImgWeather = document.getElementById("img-current-weather");
+const currentWeather = document.getElementById("current-weather");
+const currentHumidity = document.getElementById("current-humidity");
+const today = document.getElementById("today");
+const currentWindSpeed = document.getElementById("current-wind-speed");
+const currentTime = document.getElementById("current-time");
+const weatherLoading = document.getElementById("weather-loading");
+const weather = document.getElementById("weather");
+const dotsText = "...";
+let bgImage = "";
 
 // function date and time format
 function formatDateTime(value) {
@@ -205,9 +220,7 @@ async function getLocation(value) {
     }
     console.log(data);
 
-    const display = document.getElementById("display");
-    display.innerHTML = "";
-
+    displayCountry.innerHTML = "";
     for (let i = 0; i < result.length; i++) {
       const countryBox = document.createElement("div");
       const location = result[i].name;
@@ -244,18 +257,18 @@ async function getLocation(value) {
         getWeather(lat, lon, location, subLocationJoin);
       });
 
-      display.appendChild(countryBox);
+      displayCountry.appendChild(countryBox);
     }
   } catch (error) {
     console.log(error);
     if (error === "no-result") {
-      display.innerHTML = `
+      displayCountry.innerHTML = `
       <p class="text-white md:text-sm text-xs">"${value}" not found</p>
       `;
     } else {
       const seacrhCityInput = document.getElementById("lokasiInput").value;
       if (!seacrhCityInput.length == 0) {
-        display.innerHTML = `
+        displayCountry.innerHTML = `
         <p class="text-white md:text-sm text-xs">Cannot connect to the server.</p>
         `;
       }
@@ -290,21 +303,8 @@ async function getWeatherCurrentLocation(lat, lon) {
   }
 }
 
-const currentDisplay = document.getElementById("current");
-const currentLocationName = document.getElementById("location-name");
-const currentSubLocation = document.getElementById("sub-location-name");
-const currentTemperature = document.getElementById("current-temperature");
-const currentImgWeather = document.getElementById("img-current-weather");
-const currentWeather = document.getElementById("current-weather");
-const currentHumidity = document.getElementById("current-humidity");
-const today = document.getElementById("today");
-const currentWindSpeed = document.getElementById("current-wind-speed");
-const currentTime = document.getElementById("current-time");
-const weatherLoading = document.getElementById("weather-loading");
-const weather = document.getElementById("weather");
-const dotsText = "...";
 
-let bgImage = "";
+
 // error popup
 const errorContainer = document.getElementById("error-popup");
 const errorText = document.getElementById("error-text");
