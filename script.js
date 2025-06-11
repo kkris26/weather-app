@@ -134,9 +134,10 @@ const weatherCodes = {
 };
 
 let errorGetCurrentLocation = false;
+
+// function date and time format
 function formatDateTime(value) {
   const dateTime = new Date(value);
-
   const options = {
     weekday: "long",
     year: "numeric",
@@ -145,37 +146,34 @@ function formatDateTime(value) {
     hour: "2-digit",
     minute: "2-digit",
   };
-
   const formatter = new Intl.DateTimeFormat("en-GB", options);
-
   const formated = formatter.format(dateTime);
   return formated;
 }
+
 function formatDay(value) {
   const date = new Date(value);
   const options = {
     weekday: "long",
   };
-
   const formatter = new Intl.DateTimeFormat("en-GB", options);
-
   const formated = formatter.format(date);
   return formated;
 }
+
 function formatTime(value) {
   const date = new Date(value);
   const options = {
     hour: "2-digit",
     minute: "2-digit",
   };
-
   const formatter = new Intl.DateTimeFormat("en-GB", options);
-
   const formated = formatter.format(date);
   return formated;
 }
+// function date and time format
 
-//   open and close popup
+//  function open and close popup
 const popUpSearch = document.getElementById("pop-up-search");
 const btnSearch = document.getElementById("btn-search");
 const btnCloseSearch = document.getElementById("close-search");
@@ -191,6 +189,7 @@ btnCloseSearch.addEventListener("click", () => {
 btnSearch.addEventListener("click", () => {
   openPopupSearch();
 });
+// function open and close popup
 
 const defaultData = "sumatra";
 getLocation(defaultData);
