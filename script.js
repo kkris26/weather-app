@@ -303,8 +303,6 @@ async function getWeatherCurrentLocation(lat, lon) {
   }
 }
 
-
-
 // error popup
 const errorContainer = document.getElementById("error-popup");
 const errorText = document.getElementById("error-text");
@@ -315,9 +313,11 @@ function errorPopup(text) {
   errorText.innerText = text;
 }
 
-btnCloseerrorPopup.addEventListener("click", () => {
+function closeErrorPopup() {
   errorContainer.classList.add("hidden");
-});
+}
+
+btnCloseerrorPopup.addEventListener("click", closeErrorPopup);
 // error popup
 
 async function getWeather(lat, lon, location, subLocation) {
