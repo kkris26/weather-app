@@ -139,16 +139,16 @@ const weatherDailyDisplay = document.getElementById("weather-daily");
 const currentDisplay = document.getElementById("current");
 const currentLocationName = document.getElementById("location-name");
 const currentSubLocation = document.getElementById("sub-location-name");
-const currentTemperature = document.getElementById("current-temperature");
-const currentImgWeather = document.getElementById("img-current-weather");
-const currentWeather = document.getElementById("current-weather");
+const currentTemperature = document.querySelectorAll(".current-temperature");
+const currentImgWeather = document.querySelectorAll(".img-current-weather");
+const currentWeather = document.querySelectorAll(".current-weather");
+const today = document.querySelectorAll(".today");
 const currentHumidity = document.getElementById("current-humidity");
-const today = document.getElementById("today");
 const currentWindSpeed = document.getElementById("current-wind-speed");
 const currentTime = document.getElementById("current-time");
 const weatherLoading = document.getElementById("weather-loading");
 const weather = document.getElementById("weather");
-const dotsText = "...";
+const dotsText = ".....";
 let bgImage = "";
 
 // function date and time format
@@ -202,7 +202,6 @@ function closePopupSearch() {
 }
 
 document.addEventListener("click", (e) => {
-  console.log(e.target);
   if (
     (!searchWrapper.contains(e.target) && !btnSearch.contains(e.target)) ||
     btnCloseSearch.contains(e.target)
@@ -351,7 +350,7 @@ async function getWeather(lat, lon, location, subLocation) {
   errorGetCurrentLocation = false;
   loadContent();
   loadingCardLocationDaily();
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m,apparent_temperature&timezone=auto`;
   try {
     const response = await fetch(url);
     console.log(response);
@@ -375,14 +374,20 @@ async function getWeather(lat, lon, location, subLocation) {
     currentSubLocation.innerText = subLocation
       ? subLocation
       : "Failed get location name";
-    currentTemperature.innerText = `${currentData.temperature_2m} ${units.temperature_2m}`;
-    currentImgWeather.src = `assets/${
-      isDay ? weatherData.day_logo : weatherData.night_logo
-    }`;
-    currentImgWeather.classList.replace("p-10", "p-4");
-    currentWeather.innerText = weatherData.weather;
+    currentTemperature.forEach((item) => {
+      item.innerText = `${currentData.temperature_2m}`;
+      item.classList.replace("w-40", "w-full");
+    });
+
+    currentImgWeather.forEach((item) => {
+      item.src = `assets/${
+        isDay ? weatherData.day_logo : weatherData.night_logo
+      }`;
+      item.classList.replace("p-10", "p-2");
+    });
+    currentWeather.forEach((item) => (item.innerText = weatherData.weather));
     currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
-    today.innerText = "Today";
+    today.forEach((item) => (item.innerText = "Today"));
     currentWindSpeed.innerText = `${currentData.wind_speed_10m} ${units.wind_speed_10m}`;
     currentTime.innerText = formatDateTime(currentData.time);
     // insert to html
@@ -528,7 +533,7 @@ function loadingCardLocationDaily() {
     card.innerHTML = `
               <div class="flex gap-1 justify-between">
                 <p>${loadTextContent}</p>
-                <p class="text-end">... °C - ... °C</p>
+                <p class="text-end">${dotsText} °C - ${dotsText} °C</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -542,12 +547,12 @@ function loadingCardLocationDaily() {
               <div class="flex gap-4 mt-2 justify-between">
                 <div class="flex gap-2 items-center">
                   <img class="w-5" src="assets/sunrise.svg" />
-                  <p>...</p>
+                  <p>${dotsText}</p>
   
                 </div>
                 <div class="flex gap-2 items-center">
                   <img class="w-5" src="assets/sunset.svg" />
-                  <p>...</p>
+                  <p>${dotsText}</p>
                 </div>
               </div>`;
     weatherDailyDisplay.appendChild(card);
@@ -564,11 +569,16 @@ function loadContent() {
   currentTime.innerText = loadTextContent;
   currentHumidity.innerText = dotsText;
   currentWindSpeed.innerText = dotsText;
-  currentTemperature.innerText = dotsText;
-  currentWeather.innerText = loadTextContent;
-  today.innerText = loadTextContent;
-  currentImgWeather.className = ("w-full", "p-10");
-  currentImgWeather.src = "assets/tube-spinner.svg";
+  currentTemperature.forEach((item) => {
+    item.innerText = `${dotsText}`;
+    item.classList.replace("w-full", "w-40");
+  });
+  currentWeather.forEach((item) => (item.innerText = loadTextContent));
+  today.forEach((item) => (item.innerText = loadTextContent));
+  currentImgWeather.forEach((item) => {
+    item.classList.replace("p-2", "p-10");
+    item.src = "assets/tube-spinner.svg";
+  });
 }
 
 // memulai dengan mencari lokasi saat ini dan menampilkan loading pada daily weather

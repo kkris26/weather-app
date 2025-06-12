@@ -12,6 +12,9 @@
       .cursor-close {
         cursor: url(./assets/close-cursor-icon-28.cur) 14 14, pointer;
       }
+      .transition-none {
+        transition: none;
+      }
     </style>
   </head>
   <body>
@@ -73,7 +76,7 @@
               <img class="w-5 md:w-6" src="assets/map-icon-2.svg" />
               <div class="w-full min-w-0">
                 <h1
-                  class="text-sm md:text-md max-w-full md:max-w-[40%] truncate"
+                  class="text-sm md:text-md max-w-full md:max-w-[25%] truncate"
                   id="location-name"
                 >
                   Loading ...
@@ -101,40 +104,73 @@
               </button>
             </div>
           </div>
+          <!-- mobile -->
           <div
-            class="absolute w-60 backdrop-blur-sm border-1 border-white/30 hover:bg-white/15 bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
+            class="md:hidden absolute w-60 backdrop-blur-sm border-1 border-white/30 hover:bg-white/15 bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
           >
             <div
               class="absolute flex justify-between items-center w-full top-5 px-5"
             >
-              <p class="text-md" id="today">Loading ...</p>
+              <p class="text-md today">Loading ...</p>
 
-              <h2 class="text-md" id="current-temperature">...</h2>
+              <div class="flex items-center gap-[3px]">
+                <h2 class="text-md current-temperature">.....</h2>
+                <h2 class="text-md">°C</h2>
+              </div>
             </div>
             <img
               style="transition: none"
-              class="w-full p-10"
-              id="img-current-weather"
+              class="w-full p-10 img-current-weather"
               src="assets/tube-spinner.svg"
             />
             <h2
-              class="absolute capitalize bottom-5 text-md px-5 text-center"
-              id="current-weather"
+              class="current-weather absolute capitalize bottom-5 text-md px-5 text-center"
             >
               Loading ...
             </h2>
           </div>
+          <!-- mobile -->
+          <!-- dekstop -->
+          <div
+            class="hidden md:flex flex-row backdrop-blur-sm absolute border-1 border-white/30 hover:bg-white/15 bg-white/20 px-5 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-between"
+          >
+            <img
+              style="transition: none"
+              class="w-65 p-10 img-current-weather"
+              src="assets/tube-spinner.svg"
+            />
+
+            <div class="flex flex-col pe-4 gap-1 justify-between">
+              <div class="flex justify-start">
+                <p class="text-lg today">Loading ...</p>
+              </div>
+              <div class="flex items-start">
+                <h2
+                  class="text-8xl current-temperature text-end w-40 transition-none"
+                >
+                  .....
+                </h2>
+                <h2 class="text-3xl">°C</h2>
+              </div>
+              <div class="flex justify-end">
+                <h2 class="current-weather capitalize text-lg text-end">
+                  Loading ...
+                </h2>
+              </div>
+            </div>
+          </div>
+          <!-- dekstop -->
           <div
             class="flex text-[12px] md:text-sm w-full rounded-lg justify-between items-center"
           >
             <div class="flex gap-1">
               <div class="flex gap-1 items-center">
                 <img class="w-5" src="assets/humidity-icon.svg" />
-                <p id="current-humidity">...</p>
+                <p id="current-humidity">.....</p>
               </div>
               <div class="flex items-center">
                 <img class="w-10" src="assets/wind.svg" />
-                <p id="current-wind-speed">...</p>
+                <p id="current-wind-speed">.....</p>
               </div>
             </div>
             <div class="flex flex-col">
