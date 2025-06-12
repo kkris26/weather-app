@@ -221,9 +221,9 @@ btnSearch.addEventListener("click", () => {
 // function open and close popup
 
 // set default value search city
-const defaultData = "sumatra";
-getLocation(defaultData);
-document.getElementById("lokasiInput").value = defaultData;
+// const defaultData = "sumatra";
+// getLocation(defaultData);
+// document.getElementById("lokasiInput").value = defaultData;
 // set default value search city
 // get location by
 async function getLocation(value) {
@@ -235,7 +235,7 @@ async function getLocation(value) {
     if (!result) {
       throw "no-result";
     }
-    console.log(data);
+    // console.log(data);
     // kosongkan displayLocation agar tidak numpuk dengan location lain
     displayLocation.innerHTML = "";
     // perulangan untuk menampilkan list location
@@ -278,7 +278,7 @@ async function getLocation(value) {
       displayLocation.appendChild(locationBox);
     }
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     // dapat error dari throw
     if (error === "no-result") {
       displayLocation.innerHTML = `
@@ -311,10 +311,10 @@ async function getWeatherCurrentLocation(lat, lon) {
   const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
   try {
     const response = await fetch(url);
-    console.log(response);
-    console.log("fetching");
+    // console.log(response);
+    // console.log("fetching");
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     const location = data.display_name;
     const country = data.address.country;
     getWeather(lat, lon, location, country);
@@ -358,7 +358,7 @@ async function getWeather(lat, lon, location, subLocation) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,sunrise,sunset,temperature_2m_max,temperature_2m_min&current=weather_code,is_day,temperature_2m,wind_speed_10m,relative_humidity_2m,apparent_temperature&timezone=auto`;
   try {
     const response = await fetch(url);
-    console.log(response);
+    // console.log(response);
     if (!response.ok) {
       throw "bad request";
     }
@@ -369,8 +369,8 @@ async function getWeather(lat, lon, location, subLocation) {
     const isDay = currentData.is_day;
     const weatherData = weatherCodes[currentData.weather_code];
     const humidity = currentData.relative_humidity_2m;
-    console.log(currentData);
-    console.log(daily);
+    // console.log(currentData);
+    // console.log(daily);
 
     // insert to html
     currentLocationName.innerText = location
@@ -496,8 +496,8 @@ function getCurrentLocation() {
     getWeatherCurrentLocation(lat, lon);
   }
   function errorMessage(error) {
-    console.log(error);
-    console.log(error.message);
+    // console.log(error);
+    // console.log(error.message);
 
     errorGetCurrentLocation = true;
 
