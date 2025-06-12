@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style>
-      *{
+      * {
         transition: 0.3s;
       }
     </style>
@@ -14,10 +14,11 @@
   <body>
     <section
       id="pop-up-search"
-      class="fixed inset-0 bg-black/60 flex items-center justify-center z-1 hidden"
+      class="fixed cursor-pointer inset-0 bg-black/60 flex items-center justify-center z-1 hidden"
     >
       <div
-        class="backdrop-blur-sm bg-white/40 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 relative"
+        id="search-wrapper"
+        class="backdrop-blur-sm cursor-auto bg-white/40 rounded-lg w-80 md:w-100 z-100 p-4 flex flex-col gap-3 relative"
       >
         <button
           id="close-search"
@@ -42,10 +43,13 @@
             type="submit"
             class="cursor-pointer px-3 text-sm bg-black hover:bg-neutral-800 text-white rounded-lg"
           >
-            <img src="assets/search.svg" class="w-6" alt="">
+            <img src="assets/search.svg" class="w-6" alt="" />
           </button>
         </form>
-        <div id="display-country" class="flex flex-col gap-2 max-h-100 overflow-auto">
+        <div
+          id="display-country"
+          class="flex flex-col gap-2 max-h-100 overflow-auto"
+        >
           <p class="text-white md:text-sm text-xs">
             Enter a city name to see the list
           </p>
@@ -105,7 +109,7 @@
               <h2 class="text-md" id="current-temperature">...</h2>
             </div>
             <img
-            style="transition: none;"
+              style="transition: none"
               class="w-full p-10"
               id="img-current-weather"
               src="assets/tube-spinner.svg"
@@ -141,17 +145,17 @@
           <div
             class="grid h-[100%] grid-cols-6 md:gap-3 gap-2 md:w-full w-230"
             id="weather-daily"
-          >
-          </div>
+          ></div>
         </div>
       </div>
     </section>
     <section
       id="error-popup"
-      class="inset-0 z-99 fixed flex justify-center items-center bg-black/60 hidden"
+      class="inset-0 cursor-pointer z-99 fixed flex justify-center items-center bg-black/60 hidden"
     >
       <div
-        class="p-6 w-70 md:w-80 flex flex-col gap-4 justify-center items-center rounded-lg relative backdrop-blur-sm bg-white/40"
+        id="error-wrapper"
+        class="cursor-auto p-6 w-70 md:w-80 flex flex-col gap-4 justify-center items-center rounded-lg relative backdrop-blur-sm bg-white/40"
       >
         <img
           src="assets/error_icon.svg"

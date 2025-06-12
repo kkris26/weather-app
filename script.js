@@ -191,6 +191,7 @@ function formatTime(value) {
 
 //  function open and close popup
 const popUpSearch = document.getElementById("pop-up-search");
+const searchWrapper = document.getElementById("search-wrapper");
 const btnSearch = document.getElementById("btn-search");
 const btnCloseSearch = document.getElementById("close-search");
 function openPopupSearch() {
@@ -199,9 +200,17 @@ function openPopupSearch() {
 function closePopupSearch() {
   popUpSearch.classList.add("hidden");
 }
-btnCloseSearch.addEventListener("click", () => {
-  closePopupSearch();
+
+document.addEventListener("click", (e) => {
+  console.log(e.target);
+  if (
+    (!searchWrapper.contains(e.target) && !btnSearch.contains(e.target)) ||
+    btnCloseSearch.contains(e.target)
+  ) {
+    closePopupSearch();
+  }
 });
+
 btnSearch.addEventListener("click", () => {
   openPopupSearch();
 });
@@ -314,8 +323,9 @@ async function getWeatherCurrentLocation(lat, lon) {
 
 // error popup
 const errorContainer = document.getElementById("error-popup");
+const errorWrapper = document.getElementById("error-wrapper");
 const errorText = document.getElementById("error-text");
-const btnCloseerrorPopup = document.getElementById("close-error-popup");
+const btnCloseErrorPopup = document.getElementById("close-error-popup");
 
 function errorPopup(text) {
   errorContainer.classList.remove("hidden");
@@ -326,7 +336,14 @@ function closeErrorPopup() {
   errorContainer.classList.add("hidden");
 }
 
-btnCloseerrorPopup.addEventListener("click", closeErrorPopup);
+document.addEventListener("click", (e) => {
+  if (
+    !errorWrapper.contains(e.target) ||
+    btnCloseErrorPopup.contains(e.target)
+  ) {
+    closeErrorPopup();
+  }
+});
 // error popup
 
 // mencari data dari api open meteo
@@ -476,8 +493,12 @@ function getCurrentLocation() {
     loadingCardLocationDaily();
     if (error.code === 1) {
       currentLocationName.innerText = "Location access was denied";
+      const text =
+        "Location access was denied. Please enable location permissions!";
+      errorPopup(text);
     } else if (error.code === 2) {
       currentLocationName.innerText = error.message;
+      errorPopup(error.message);
     }
 
     if (bgImage) {
