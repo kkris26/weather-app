@@ -418,7 +418,7 @@ async function getWeather(lat, lon, location, subLocation) {
 
       const card = document.createElement("div");
       card.className =
-        "backdrop-blur-sm  hover:bg-white/15 bg-white/20 w-full text-[8px] md:text-xs flex flex-col justify-between  p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
+        "backdrop-blur-sm  hover:bg-white/15 bg-white/20 w-full text-[11px] md:text-xs flex flex-col justify-between  p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
               <div class="flex gap-1 justify-between">
@@ -435,7 +435,7 @@ async function getWeather(lat, lon, location, subLocation) {
                     ? weatherDataDaily.day_logo
                     : weatherDataDaily.night_logo
                 }" />
-                <p class="absolute bottom-0 capitalize text-[10px] md:text-xs px-4 text-center">${
+                <p class="absolute bottom-0 capitalize text-[11px] md:text-xs px-4 text-center">${
                   weatherDataDaily.weather
                 }</p>
       
@@ -535,7 +535,7 @@ function loadingCardLocationDaily() {
   for (let i = 1; i < 7; i++) {
     const card = document.createElement("div");
     card.className =
-      "backdrop-blur-sm w-full text-[8px] md:text-xs flex flex-col justify-between hover:bg-white/15 bg-white/20 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
+      "backdrop-blur-sm w-full text-[11px] md:text-xs flex flex-col justify-between hover:bg-white/15 bg-white/20 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
     card.innerHTML = `
               <div class="flex gap-1 justify-between">
@@ -546,7 +546,7 @@ function loadingCardLocationDaily() {
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
               >
                 <img class="w-30 p-8" src="assets/tube-spinner.svg" />
-                <p class="absolute bottom-0 capitalize text-[10px] md:text-xs px-4 text-center">${loadTextContent}</p>
+                <p class="absolute bottom-0 capitalize text-[11px] md:text-xs px-4 text-center">${loadTextContent}</p>
       
     
               </div>
