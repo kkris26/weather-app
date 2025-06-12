@@ -9,12 +9,15 @@
       * {
         transition: 0.3s;
       }
+      .cursor-close {
+        cursor: url(./assets/close-cursor-icon-28.cur) 14 14, pointer;
+      }
     </style>
   </head>
   <body>
     <section
       id="pop-up-search"
-      class="fixed cursor-pointer inset-0 bg-black/60 flex items-center justify-center z-1 hidden"
+      class="fixed cursor-close inset-0 bg-black/60 flex items-center justify-center z-1 hidden"
     >
       <div
         id="search-wrapper"
@@ -151,7 +154,7 @@
     </section>
     <section
       id="error-popup"
-      class="inset-0 cursor-pointer z-99 fixed flex justify-center items-center bg-black/60 hidden"
+      class="inset-0 cursor-close z-99 fixed flex justify-center items-center bg-black/60 hidden"
     >
       <div
         id="error-wrapper"
