@@ -67,7 +67,7 @@
         class="bg-gray-600 bg-[position:center_20%] relative w-full bg-cover h-screen flex flex-col items-center justify-between p-4 text-white"
         id="current"
       >
-        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="absolute inset-0 bg-black/20"></div>
         <div
           class="flex flex-col justify-between relative w-full items-center h-[100%]"
         >
@@ -106,16 +106,16 @@
           </div>
           <!-- mobile -->
           <div
-            class="md:hidden absolute w-60 backdrop-blur-sm border-1 border-white/30 hover:bg-white/15 bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
+            class="md:hidden text-lg absolute w-60 backdrop-blur-sm border-1 border-white/30 hover:bg-white/15 bg-white/20 p-3 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center flex-col"
           >
             <div
               class="absolute flex justify-between items-center w-full top-5 px-5"
             >
-              <p class="text-md today">Loading ...</p>
+              <p class="today">Loading ...</p>
 
               <div class="flex items-center gap-[3px]">
-                <h2 class="text-md current-temperature">.....</h2>
-                <h2 class="text-md">°C</h2>
+                <h2 class="current-temperature">.....</h2>
+                <h2>°C</h2>
               </div>
             </div>
             <img
@@ -124,7 +124,7 @@
               src="assets/tube-spinner.svg"
             />
             <h2
-              class="current-weather absolute capitalize bottom-5 text-md px-5 text-center"
+              class="current-weather absolute capitalize bottom-5 px-5 text-center"
             >
               Loading ...
             </h2>
@@ -132,28 +132,26 @@
           <!-- mobile -->
           <!-- dekstop -->
           <div
-            class="hidden md:flex flex-row backdrop-blur-sm absolute border-1 border-white/30 hover:bg-white/15 bg-white/20 px-5 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-between"
+            class="hidden md:flex flex-row absolute px-5 rounded-lg left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-between"
           >
             <img
               style="transition: none"
-              class="w-65 p-10 img-current-weather"
+              class="w-80 p-10 img-current-weather"
               src="assets/tube-spinner.svg"
             />
 
-            <div class="flex flex-col pe-4 gap-1 justify-between">
-              <div class="flex justify-start">
-                <p class="text-lg today">Loading ...</p>
-              </div>
+            <div class="flex flex-col pe-4 justify-between">
               <div class="flex items-start">
                 <h2
-                  class="text-8xl current-temperature text-end w-40 transition-none"
+                  class="text-9xl current-temperature text-end transition-none"
                 >
                   .....
                 </h2>
-                <h2 class="text-3xl">°C</h2>
+                <h2 class="text-7xl">°C</h2>
               </div>
-              <div class="flex justify-end">
-                <h2 class="current-weather capitalize text-lg text-end">
+              <div class="flex justify-between">
+                <p class="text-md today">Loading ...</p>
+                <h2 class="current-weather capitalize text-md text-end">
                   Loading ...
                 </h2>
               </div>
@@ -161,7 +159,7 @@
           </div>
           <!-- dekstop -->
           <div
-            class="flex text-[12px] md:text-sm w-full rounded-lg justify-between items-center"
+            class="flex text-[11px] md:text-sm w-full rounded-lg justify-between items-center"
           >
             <div class="flex gap-1">
               <div class="flex gap-1 items-center">
