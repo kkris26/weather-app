@@ -151,6 +151,11 @@ const weather = document.getElementById("weather");
 const dotsText = ".....";
 let bgImage = "";
 
+// truncating
+function truncatingNumber(value) {
+  return Math.trunc(value);
+}
+
 // function date and time format
 function formatDateTime(value) {
   const dateTime = new Date(value);
@@ -418,7 +423,9 @@ async function getWeather(lat, lon, location, subLocation) {
       card.innerHTML = `
               <div class="flex gap-1 justify-between">
                 <p>${formatDay(date)}</p>
-                <p class="text-end">${minTemp} °C - ${maxTemp} °C</p>
+                <p class="text-end">${truncatingNumber(
+                  minTemp
+                )} °C - ${truncatingNumber(maxTemp)} °C</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
