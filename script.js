@@ -140,6 +140,9 @@ const currentDisplay = document.getElementById("current");
 const currentLocationName = document.getElementById("location-name");
 const currentSubLocation = document.getElementById("sub-location-name");
 const currentTemperature = document.querySelectorAll(".current-temperature");
+const currentTemperatureUnit = document.querySelectorAll(
+  ".current-temperature-unit"
+);
 const currentImgWeather = document.querySelectorAll(".img-current-weather");
 const currentWeather = document.querySelectorAll(".current-weather");
 const today = document.querySelectorAll(".today");
@@ -367,7 +370,9 @@ async function getWeather(lat, lon, location, subLocation) {
       : "Failed get location name";
     currentTemperature.forEach((item) => {
       item.innerText = truncatingNumber(currentData.temperature_2m);
-      // item.classList.replace("w-40", "w-70");
+    });
+    currentTemperatureUnit.forEach((item) => {
+      item.innerText = units.temperature_2m;
     });
 
     currentImgWeather.forEach((item) => {
@@ -409,9 +414,9 @@ async function getWeather(lat, lon, location, subLocation) {
       card.innerHTML = `
               <div class="flex gap-1 justify-between text-[10px] md:text-xs">
                 <p>${formatDay(date)}</p>
-                <p class="text-end">${truncatingNumber(
-                  minTemp
-                )} °C - ${truncatingNumber(maxTemp)} °C</p>
+                <p class="text-end">${truncatingNumber(minTemp)} ${
+        units.temperature_2m
+      }  - ${truncatingNumber(maxTemp)} ${units.temperature_2m}</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -523,7 +528,7 @@ function loadingCardLocationDaily() {
     card.innerHTML = `
               <div class="flex gap-1 justify-between text-[10px] md:text-xs">
                 <p>${loadTextContent}</p>
-                <p class="text-end">${dotsText} °C - ${dotsText} °C</p>
+                <p class="text-end">${dotsText} - ${dotsText}</p>
               </div>
               <div
                 class="absolute mt-[-10px] w-full flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -561,7 +566,9 @@ function loadContent() {
   currentWindSpeed.innerText = dotsText;
   currentTemperature.forEach((item) => {
     item.innerText = `${dotsText}`;
-    // item.classList.replace("w-70", "w-40");
+  });
+  currentTemperatureUnit.forEach((item) => {
+    item.innerText = "..";
   });
   currentWeather.forEach((item) => (item.innerText = loadTextContent));
   today.forEach((item) => (item.innerText = loadTextContent));
