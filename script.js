@@ -407,7 +407,7 @@ async function getWeather(lat, lon, location, subLocation) {
         "backdrop-blur-sm  hover:bg-white/15 bg-white/20 w-full text-[11px] md:text-xs flex flex-col justify-between  p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
-              <div class="flex gap-1 justify-between">
+              <div class="flex gap-1 justify-between text-[10px] md:text-xs">
                 <p>${formatDay(date)}</p>
                 <p class="text-end">${truncatingNumber(
                   minTemp
@@ -521,7 +521,7 @@ function loadingCardLocationDaily() {
       "backdrop-blur-sm w-full text-[11px] md:text-xs flex flex-col justify-between hover:bg-white/15 bg-white/20 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
     card.innerHTML = `
-              <div class="flex gap-1 justify-between">
+              <div class="flex gap-1 justify-between text-[10px] md:text-xs">
                 <p>${loadTextContent}</p>
                 <p class="text-end">${dotsText} °C - ${dotsText} °C</p>
               </div>
