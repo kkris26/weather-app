@@ -553,7 +553,7 @@ function loadingCardLocationDaily() {
       "backdrop-blur-sm w-full text-[11px] md:text-xs flex flex-col justify-between hover:bg-white/15 bg-white/20 p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
     card.innerHTML = `
-              <div class="flex gap-1 justify-between text-[10px] md:text-xs">
+              <div class="flex gap-1 justify-between">
                 <p>${loadTextContent}</p>
                 <p class="text-end">${dotsText} - ${dotsText}</p>
               </div>
