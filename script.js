@@ -153,6 +153,8 @@ const weatherLoading = document.getElementById("weather-loading");
 const weather = document.getElementById("weather");
 const dotsText = ".....";
 let bgImage = "";
+// // cek mobile
+// const isMobile = window.innerWidth <= 448;
 
 // truncating
 function truncatingNumber(value) {
@@ -160,10 +162,10 @@ function truncatingNumber(value) {
 }
 
 // function date and time format
-function formatDateTime(value) {
+function formatDateTime(value, info) {
   const dateTime = new Date(value);
   const options = {
-    weekday: "long",
+    weekday: info,
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -175,10 +177,10 @@ function formatDateTime(value) {
   return formated;
 }
 
-function formatDay(value) {
+function formatDay(value, info) {
   const date = new Date(value);
   const options = {
-    weekday: "long",
+    weekday: info,
   };
   const formatter = new Intl.DateTimeFormat("en-GB", options);
   const formated = formatter.format(date);
@@ -226,6 +228,24 @@ btnSearch.addEventListener("click", () => {
 // get location by
 async function getLocation(value) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${value}`;
+
+  // loading data location
+  displayLocation.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    const locationBox = document.createElement("div");
+    locationBox.className =
+      "card border-1 border-white/30 bg-gray-300/40 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
+    locationBox.innerHTML = `
+          <div class="flex gap-2">
+              <img src="./assets/no-picture.svg" width="48" height="48" class="border rounded-full border-white/30">
+          <div class="flex flex-col items-start justify-center w-100%">
+              <h2 class="text-white text-sm" >Loading..</h2>  
+          <div class="flex">
+                <p class="text-[10px] md:text-[-14] text-left text-white/70">Loading..</p>  
+          </div>`;
+    displayLocation.appendChild(locationBox);
+  }
+  // loading data location
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -253,7 +273,7 @@ async function getLocation(value) {
         "card border-1 border-white/30 bg-gray-300/40 cursor-pointer p-2 hover:bg-gray-200/40 rounded-lg";
       locationBox.innerHTML = `
                     <div class="flex gap-2">
-              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" class="border rounded-full border-white/30">
+              <img src="https://hatscripts.github.io/circle-flags/flags/${countryCode}.svg" width="48" height="48" class="border bg-gray-200 rounded-full border-white/30">
                     <div class="flex flex-col items-start justify-center w-100%">
                     <h2 class="text-white text-sm" >${location}, ${country}</h2>
                     
@@ -385,7 +405,13 @@ async function getWeather(lat, lon, location, subLocation) {
     currentHumidity.innerText = `${humidity} ${units.relative_humidity_2m}`;
     today.forEach((item) => (item.innerText = "Today"));
     currentWindSpeed.innerText = `${currentData.wind_speed_10m} ${units.wind_speed_10m}`;
-    currentTime.innerText = formatDateTime(currentData.time);
+    currentTime.innerHTML = `<p class="md:hidden">${formatDateTime(
+      currentData.time,
+      "short"
+    )}</p>
+    <p class="hidden md:block">${formatDateTime(currentData.time, "long")}</p>
+    `;
+
     // insert to html
     // ganti bg sesuai situasi lokasi
     const nightBG = "bg-[url(assets/bg-night.webp)]";
@@ -412,8 +438,9 @@ async function getWeather(lat, lon, location, subLocation) {
         "backdrop-blur-sm  hover:bg-white/15 bg-white/20 w-full text-[11px] md:text-xs flex flex-col justify-between  p-3 md:p-4 h-[100%] relative text-white text-sm rounded";
 
       card.innerHTML = `
-              <div class="flex gap-1 justify-between text-[10px] md:text-xs">
-                <p>${formatDay(date)}</p>
+              <div class="flex gap-1 justify-between">
+                <p class ="md:hidden">${formatDay(date, "short")}</p>
+                <p class ="hidden md:block">${formatDay(date, "long")}</p>
                 <p class="text-end">${truncatingNumber(minTemp)} ${
         units.temperature_2m
       }  - ${truncatingNumber(maxTemp)} ${units.temperature_2m}</p>
@@ -426,20 +453,20 @@ async function getWeather(lat, lon, location, subLocation) {
                     ? weatherDataDaily.day_logo
                     : weatherDataDaily.night_logo
                 }" />
-                <p class="absolute bottom-0 capitalize text-[11px] md:text-xs px-4 text-center">${
+                <p class="absolute bottom-0 capitalize  px-4 text-center">${
                   weatherDataDaily.weather
                 }</p>
       
     
               </div>
 
-              <div class="flex gap-4 mt-2 justify-between">
-                <div class="flex gap-2 items-center">
+              <div class="flex gap-2 mt-2 justify-between">
+                <div class="flex gap-1 items-center">
                   <img class="w-5" src="assets/sunrise.svg" />
                   <p>${formatTime(sunrise)}</p>
 
                 </div>
-                <div class="flex gap-2 items-center">
+                <div class="flex gap-1 items-center">
                   <img class="w-5" src="assets/sunset.svg" />
                   <p>${formatTime(sunset)}</p>
                 </div>
